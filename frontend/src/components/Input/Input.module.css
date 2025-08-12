@@ -1,0 +1,58 @@
+.labelInputItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 6px; /* щоб було місце під лінію */
+}
+
+.labelInputItem::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: black; /* чорна базова лінія */
+  z-index: 0;
+}
+
+.labelInputItem::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: rgb(109, 200, 123);
+  transition: width 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.labelInputItem:has(input:focus)::after {
+  width: 100%;
+}
+
+.labelInputItem input {
+  height: 2cap;
+  font-size: medium;
+  border-radius: 5px;
+  transition: all 0.5s ease;
+  border: none;
+}
+
+.labelInputItem input:focus {
+  outline: none;
+  height: 40px;
+}
+
+.labelInputItem label {
+  font-size: large;
+  transition: 0.5s ease;
+}
+
+.labelInputItem:has(input:focus) > label {
+  /* transform: scale(1.1); — це CSS-властивість, яка збільшує розмір елемента за допомогою масштабування. */
+  transform: scale(1.1);
+  color: rgb(54, 130, 66);
+}

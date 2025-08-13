@@ -40,7 +40,7 @@
   background: linear-gradient(
     120deg,
     transparent,
-    hsla(126, 72%, 56%, 0.5),
+    hsla(109, 100%, 77%, 0.5),
     transparent
   );
   transform: translateX(-100%);
@@ -54,6 +54,6 @@
 }
 
 .authForm button:hover {
-  box-shadow: 0 0 20px 10px hsla(126, 53%, 31%, 0.5);
+  box-shadow: 0 0 20px 10px #51d026;
   border: 2px solid black;
 }

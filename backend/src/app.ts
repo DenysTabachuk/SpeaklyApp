@@ -1,11 +1,8 @@
-import express, { Request, Response } from "express";
-
+import express from "express";
 import cors from "cors";
 import routes from "./routes/index";
-import { PrismaClient } from "@prisma/client";
 
 const app = express();
-const PORT = 3000;
 
 app.use(
   cors({

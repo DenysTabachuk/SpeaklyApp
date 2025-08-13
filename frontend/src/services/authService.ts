@@ -17,14 +17,6 @@ export async function registerUser(data: RegisterData) {
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
-    const resultData = await response.json().catch(() => ({}));
-    throw new Error(
-      resultData.error ||
-        "Сталася невідома помилка, спробуйте зареєструватися пізніше."
-    );
-  }
-
   return response.json();
 }
 
@@ -34,14 +26,6 @@ export async function loginUser(data: loginData) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-
-  if (!response.ok) {
-    const resultData = await response.json().catch(() => ({}));
-    throw new Error(
-      resultData.error ||
-        "Сталася невідома помилка, спробуйте авторизуватися пізніше."
-    );
-  }
 
   return response.json();
 }

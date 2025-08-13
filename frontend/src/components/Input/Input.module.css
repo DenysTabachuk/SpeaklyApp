@@ -23,7 +23,7 @@
   left: 0;
   height: 3px;
   width: 0;
-  background: rgb(109, 200, 123);
+  background: #51d026;
   transition: width 0.5s ease;
   z-index: 1;
   pointer-events: none;
@@ -54,5 +54,5 @@
 .labelInputItem:has(input:focus) > label {
   /* transform: scale(1.1); — це CSS-властивість, яка збільшує розмір елемента за допомогою масштабування. */
   transform: scale(1.1);
-  color: rgb(54, 130, 66);
+  color: #51d026;
 }

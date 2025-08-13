@@ -1,15 +1,36 @@
 .header {
-  background-color: #00de94;
-  color: white;
   padding: 10px 20px 10px 20px;
   margin: 0;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+.header h1 a {
+  color: #51d026;
+}
+
+.header ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.header ul li {
+  border: 1px solid black;
+  padding: 7px 12px 7px 12px;
+  border-radius: 10px;
+  background-color: #51d026;
+}
+
+.header ul li:hover {
+  background-color: #6fdd4b;
+  box-shadow: 3px 3px 3px rgb(124, 124, 124);
+}
+
 .header a {
   text-decoration: none;
   color: white;
+  font-size: 1.1em;
+  letter-spacing: 1px;
 }

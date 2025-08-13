@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useActionState } from "react";
 import { loginUser } from "../../services/authService";
 import styles from "./AuthForm.module.css";
+import { authActions } from "../../store/authSlice";
+import { useDispatch } from "react-redux";
 
 type LoginFormState = {
   email: string;
@@ -12,6 +14,7 @@ type LoginFormState = {
 
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (state: LoginFormState, formData: FormData) => {
     const loginFormData = {
@@ -23,8 +26,11 @@ export default function Login() {
 
     if (errors.length === 0) {
       try {
-        await loginUser(loginFormData);
-        navigate("/");
+        const response = await loginUser(loginFormData);
+        dispatch(authActions.login(response));
+        localStorage.setItem("token", response.token);
+        console.log(response);
+        // navigate("/");
       } catch (err) {
         errors.push(err instanceof Error ? err.message : "Невідома помилка");
       }

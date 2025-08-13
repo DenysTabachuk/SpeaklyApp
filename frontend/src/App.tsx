@@ -1,8 +1,9 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Header from "./components/Header/Header";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>
     </BrowserRouter>

@@ -1,8 +1,9 @@
 import styles from "./AuthForm.module.css";
 import { useActionState } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "../../components/Input/Input";
+import Input from "../../components/Inputs/Input";
 import { registerUser } from "../../services/authService";
+import Button from "../../components/Button/Button";
 
 type RegisterFormState = {
   nickname: string;
@@ -96,7 +97,9 @@ export default function RegisterPage() {
         </ul>
       )}
 
-      <button>Зареєструватися</button>
+      <Button glowing accept>
+        Зареєструватися
+      </Button>
     </form>
   );
 }

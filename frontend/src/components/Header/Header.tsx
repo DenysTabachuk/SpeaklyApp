@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
+import Button from "../Button/Button";
 
 export default function Header() {
   const user = useSelector((state: RootState) => state.auth.user);
-  console.log("user: ", user);
 
   return (
     <header className={styles.header}>
@@ -19,15 +19,25 @@ export default function Header() {
         <ul>
           {!user && (
             <li>
-              <Link to="/login">Увійти</Link>
+              <Link to="/login">
+                <Button glowing>Увійти</Button>
+              </Link>
             </li>
           )}
           {!user && (
             <li>
-              <Link to="/register">Зареєструватися</Link>
+              <Link to="/register">
+                <Button glowing>Зареєструватися</Button>
+              </Link>
             </li>
           )}
-          <li>{user && <Link to="/profile">Профіль</Link>}</li>
+          {user && (
+            <li>
+              <Link to="/profile">
+                <Button glowing>Профіль</Button>
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </header>

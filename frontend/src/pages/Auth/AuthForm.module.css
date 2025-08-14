@@ -1,59 +1,5 @@
-.authForm {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 320px;
-  border: 1px solid black;
-  padding: 35px;
-  border-radius: 15px;
-  box-shadow: 0 4px 5px rgb(28, 28, 28);
-}
-
 .authForm h2 {
   text-align: center;
   transform: scale(1.2); /* Чи дуже коректно ?*/
   margin: 0;
-}
-
-.authForm button {
-  min-width: 50%;
-  padding: 15px;
-  height: 50px;
-  margin: auto;
-  border-radius: 8px;
-  background: transparent;
-  position: relative;
-  z-index: 1;
-  font-size: medium;
-  overflow: hidden;
-  box-shadow: 0 4px 3px rgb(156, 156, 156);
-  /* щоб приховати псевдоелемент поза кнопкою */
-}
-
-.authForm button::before {
-  position: absolute;
-  content: "";
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    hsla(109, 100%, 77%, 0.5),
-    transparent
-  );
-  transform: translateX(-100%);
-  /* transform: translateX(-100%) — це CSS-властивість, яка переміщує елемент по горизонталі вліво на 100% його власної ширини. */
-  transition: transform 1.6s ease;
-  z-index: 0;
-}
-
-.authForm button:hover::before {
-  transform: translateX(100%);
-}
-
-.authForm button:hover {
-  box-shadow: 0 0 20px 10px #51d026;
-  border: 2px solid black;
 }

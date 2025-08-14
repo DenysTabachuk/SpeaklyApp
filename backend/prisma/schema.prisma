@@ -19,4 +19,16 @@ model User {
   name  String
   email String @unique
   password String
+  Collections Collection[]
+}
+
+
+model Collection {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  // "user — це поле-об’єкт, який пов'язаний з моделлю User,
+  //  і зв'язок будується через стовпець userId у цій таблиці, який посилається на стовпець id у таблиці User."
 }

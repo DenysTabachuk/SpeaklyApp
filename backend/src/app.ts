@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import routes from "./routes/index";
+import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 
@@ -20,4 +21,6 @@ app.get("/", (req, res) => {
 
 // Підключаємо всі маршрути
 app.use(routes);
+app.use(errorHandler);
+
 export default app;

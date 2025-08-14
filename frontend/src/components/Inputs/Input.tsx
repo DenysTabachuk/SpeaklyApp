@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Input.module.css";
+import styles from "./Inputs.module.css";
 
 //  це утилітний тип TypeScript з React, який дозволяє отримати всі пропси,
 // які приймає стандартний HTML-елемент <input>.

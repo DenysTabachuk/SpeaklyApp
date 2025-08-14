@@ -1,0 +1,89 @@
+/* Для Chrome, Safari, Edge */
+.labelInputItem input:-webkit-autofill,
+.labelInputItem input:-webkit-autofill:hover,
+.labelInputItem input:-webkit-autofill:focus,
+.labelInputItem textarea:-webkit-autofill,
+.labelInputItem textarea:-webkit-autofill:hover,
+.labelInputItem textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset; /* фон прозорий */
+  -webkit-text-fill-color: white; /* колір тексту */
+  transition: background-color 5000s ease-in-out 0s; /* хитрий хак, щоб не мигало */
+}
+
+/* Коли браузер підставляє автозаповнені значення, 
+він використовує власний фон (-webkit-autofill),
+який переоприділяє фон інпуту, і CSS background: transparent; */
+
+/* Щоб це виправити, треба явно задати стилі для псевдокласів :
+-webkit-autofill, 
+:-webkit-autofill:hover, 
+:-webkit-autofill:focus і т.п. */
+
+.labelInputItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 6px; /* щоб було місце під лінію */
+}
+
+.labelInputItem::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: white;
+  z-index: 0;
+}
+
+.labelInputItem::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: var(--focus-color);
+  transition: width 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.labelInputItem:has(:focus)::after {
+  width: 100%;
+}
+
+.labelInputItem input,
+.labelInputItem textarea {
+  height: 2cap;
+  font-size: medium;
+  border-radius: 5px;
+  transition: all 0.5s ease;
+  border: none;
+  resize: none;
+  background: transparent;
+  color: white;
+}
+
+.labelInputItem input:focus {
+  outline: none;
+  height: 40px;
+}
+
+.labelInputItem textarea:focus {
+  outline: none;
+  height: 200px;
+}
+
+.labelInputItem label {
+  font-size: x-large;
+  transition: 0.5s ease;
+  transform: translateX(-8px); /* зсув вліво на 8px */
+}
+
+.labelInputItem:has(:focus) > label {
+  /* transform: scale(1.1); — це CSS-властивість, яка збільшує розмір елемента за допомогою масштабування. */
+  transform: scale(1.1);
+  color: var(--focus-color);
+}

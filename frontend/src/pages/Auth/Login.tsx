@@ -1,10 +1,11 @@
-import Input from "../../components/Input/Input";
+import Input from "../../components/Inputs/Input";
 import { useNavigate } from "react-router-dom";
 import { useActionState } from "react";
 import { loginUser } from "../../services/authService";
 import styles from "./AuthForm.module.css";
 import { authActions } from "../../store/authSlice";
 import { useDispatch } from "react-redux";
+import Button from "../../components/Button/Button";
 
 type LoginFormState = {
   email: string;
@@ -30,7 +31,7 @@ export default function Login() {
         dispatch(authActions.login(response));
         localStorage.setItem("token", response.token);
         console.log(response);
-        // navigate("/");
+        navigate("/");
       } catch (err) {
         errors.push(err instanceof Error ? err.message : "Невідома помилка");
       }
@@ -73,7 +74,9 @@ export default function Login() {
         </ul>
       )}
 
-      <button>Увійти</button>
+      <Button glowing accept>
+        Увійти
+      </Button>
     </form>
   );
 }

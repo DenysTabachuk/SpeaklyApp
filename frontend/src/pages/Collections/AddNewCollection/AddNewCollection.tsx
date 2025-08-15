@@ -1,21 +1,15 @@
-import Input from "../../../../components/Inputs/Input";
-import Textarea from "../../../../components/Inputs/TextArea";
-import Button from "../../../../components/Button/Button";
+import Input from "../../../components/Inputs/Input";
+import Textarea from "../../../components/Inputs/TextArea";
+import Button from "../../../components/Button/Button";
 import styles from "./AddNewCollection.module.css";
-import { addNewCollection } from "../../../../services/collectionsService";
-import type { Collection } from "../../../../services/collectionsService";
+import { addNewCollection } from "../../../services/collectionsService";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-type AddNewCollectionProps = {
-  stopAdding: () => void;
-  addCollection: (collection: Collection) => void;
-};
-
-export default function AddNewCollection({
-  stopAdding,
-  addCollection,
-}: AddNewCollectionProps) {
+export default function AddNewCollectionPage() {
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const saveColletionAction = async (formData: FormData) => {
     const collection = {
@@ -24,17 +18,12 @@ export default function AddNewCollection({
     };
 
     const token = localStorage.getItem("token");
-    console.log("-");
     if (token) {
       const response = await addNewCollection(collection, token);
       if (response.error) {
         setError(response.error);
-      }
-      console.log(response);
-      if (response.collection) {
-        setError("");
-        console.log("+");
-        addCollection(response.collection);
+      } else {
+        navigate(-1);
       }
     }
   };
@@ -48,13 +37,15 @@ export default function AddNewCollection({
       {error && <p>{error}</p>}
 
       <div className={styles.buttonContainer}>
-        <Button accept glowing>
+        <Button glowing>
           <b>Зберегти</b>
         </Button>
 
-        <Button decline glowing onClick={stopAdding}>
-          <b>Відмінити</b>
-        </Button>
+        <Link to="/collections">
+          <Button glowing>
+            <b>Відмінити</b>
+          </Button>
+        </Link>
       </div>
     </form>
   );

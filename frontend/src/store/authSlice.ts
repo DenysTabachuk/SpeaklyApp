@@ -19,6 +19,7 @@ if (token) {
     };
   } catch (e) {
     console.error("Invalid token", e);
+    console.log("remowing token");
     localStorage.removeItem("token");
   }
 }
@@ -35,6 +36,7 @@ const authSlice = createSlice({
     login(state, action) {
       state.token = action.payload.token;
       state.user = action.payload.user;
+      localStorage.setItem("token", action.payload.token);
     },
     logout(state) {
       state.token = null;

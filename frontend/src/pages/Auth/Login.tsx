@@ -32,6 +32,9 @@ export default function Login() {
         if (response.error) {
           errors.push(response.error);
         } else {
+          console.log("dispatch login");
+          console.log(response);
+
           dispatch(authActions.login(response));
           navigate("/");
         }

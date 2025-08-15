@@ -39,12 +39,8 @@ export async function getUserCollections(
   next: NextFunction
 ) {
   try {
-    if (!req.user) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
     const collections = await prisma.collection.findMany({
-      where: { userId: req.user.userId },
+      where: { userId: req.user!.userId },
       orderBy: { id: "desc" },
     });
 
@@ -52,4 +48,25 @@ export async function getUserCollections(
   } catch (error) {
     next(error);
   }
+}
+
+export async function getCollectionById(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) {
+  const collectionId = parseInt(req.params.collectionId, 10);
+  if (isNaN(collectionId)) {
+    return res.status(400).json({ error: "Invalid collection ID" });
+  }
+
+  const collection = await prisma.collection.findUnique({
+    where: { id: collectionId },
+  });
+
+  if (!collection) {
+    return res.status(404).json({ error: "Collection not found" });
+  }
+
+  return res.status(200).json({ collection });
 }

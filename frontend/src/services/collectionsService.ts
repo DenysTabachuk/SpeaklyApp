@@ -1,7 +1,10 @@
-// types.ts або collectionsService.ts
+export type newCollection = {
+  name: string;
+  description: string;
+};
 
 export type Collection = {
-  id?: number;
+  id: number;
   name: string;
   description: string;
 };
@@ -23,13 +26,24 @@ export async function getUserCollections(token: string) {
     },
   });
 
-  // const data = await response.json();
-  // return data as GetUserCollectionsResponse;
+  return response;
+}
+
+export async function getCollectionById(collectionID: string, token: string) {
+  const response = await fetch(
+    `http://localhost:3000/collections/${collectionID}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
   return response;
 }
 
 export async function addNewCollection(
-  newCollection: Collection,
+  newCollection: newCollection,
   token: string
 ): Promise<AddNewCollectionResponse> {
   const response = await fetch("http://localhost:3000/collections", {

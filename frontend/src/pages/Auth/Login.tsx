@@ -1,11 +1,12 @@
 import Input from "../../components/Inputs/Input";
+import Button from "../../components/Button/Button";
+import ErrorBox from "../../components/ErrorBox/ErrorBox";
+import styles from "./AuthForm.module.css";
 import { useNavigate } from "react-router-dom";
 import { useActionState } from "react";
 import { loginUser } from "../../services/authService";
-import styles from "./AuthForm.module.css";
 import { authActions } from "../../store/authSlice";
 import { useDispatch } from "react-redux";
-import Button from "../../components/Button/Button";
 
 type LoginFormState = {
   email: string;
@@ -28,10 +29,12 @@ export default function Login() {
     if (errors.length === 0) {
       try {
         const response = await loginUser(loginFormData);
-        dispatch(authActions.login(response));
-        localStorage.setItem("token", response.token);
-        console.log(response);
-        navigate("/");
+        if (response.error) {
+          errors.push(response.error);
+        } else {
+          dispatch(authActions.login(response));
+          navigate("/");
+        }
       } catch (err) {
         errors.push(err instanceof Error ? err.message : "Невідома помилка");
       }
@@ -66,17 +69,9 @@ export default function Login() {
         defaultValue={formState.password}
       />
 
-      {formState.errors?.length > 0 && (
-        <ul className="errors">
-          {formState.errors.map((error) => (
-            <li key={error}>{error}</li>
-          ))}
-        </ul>
-      )}
+      <ErrorBox errors={formState.errors}></ErrorBox>
 
-      <Button glowing accept>
-        Увійти
-      </Button>
+      <Button glowing>Увійти</Button>
     </form>
   );
 }

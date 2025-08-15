@@ -1,9 +1,10 @@
+import Input from "../../components/Inputs/Input";
+import Button from "../../components/Button/Button";
+import ErrorBox from "../../components/ErrorBox/ErrorBox";
 import styles from "./AuthForm.module.css";
 import { useActionState } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "../../components/Inputs/Input";
 import { registerUser } from "../../services/authService";
-import Button from "../../components/Button/Button";
 
 type RegisterFormState = {
   nickname: string;
@@ -32,8 +33,12 @@ export default function RegisterPage() {
 
     if (errors.length === 0) {
       try {
-        await registerUser(userInfo);
-        navigate("/login");
+        const response = await registerUser(userInfo);
+        if (response.error) {
+          errors.push(response.error);
+        } else {
+          navigate("/login");
+        }
       } catch (err) {
         errors.push(err instanceof Error ? err.message : "Невідома помилка");
       }
@@ -61,6 +66,7 @@ export default function RegisterPage() {
         name="nickname"
         required
         defaultValue={formState.nickname}
+        minLength={4}
       />
 
       <Input
@@ -78,6 +84,7 @@ export default function RegisterPage() {
         name="password"
         required
         defaultValue={formState.password}
+        minLength={6}
       />
 
       <Input
@@ -87,19 +94,12 @@ export default function RegisterPage() {
         name="confirm-password"
         required
         defaultValue={formState.confirmPassword}
+        minLength={6}
       />
 
-      {formState.errors?.length > 0 && (
-        <ul className="errors">
-          {formState.errors.map((error) => (
-            <li key={error}>{error}</li>
-          ))}
-        </ul>
-      )}
+      <ErrorBox errors={formState.errors}></ErrorBox>
 
-      <Button glowing accept>
-        Зареєструватися
-      </Button>
+      <Button glowing>Зареєструватися</Button>
     </form>
   );
 }

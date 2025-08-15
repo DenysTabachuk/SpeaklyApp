@@ -18,7 +18,8 @@ if (token) {
       email: decoded.email,
     };
   } catch (e) {
-    console.error("Невалідний токен", e);
+    console.error("Invalid token", e);
+    localStorage.removeItem("token");
   }
 }
 
@@ -32,7 +33,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login(state, action) {
-      console.log("login action");
       state.token = action.payload.token;
       state.user = action.payload.user;
     },

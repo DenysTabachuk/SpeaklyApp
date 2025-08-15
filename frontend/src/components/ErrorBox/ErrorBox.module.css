@@ -1,0 +1,16 @@
+.errorBox {
+  background: radial-gradient(#d1c9c9, #f69595);
+  color: #b30000;
+  border: 1px solid #ff4d4d;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  font-size: medium;
+
+  box-shadow: 0px 2px 5px #b30000;
+}
+
+.errorBox ul {
+  margin: 5px 0 0;
+  padding-left: 20px;
+}

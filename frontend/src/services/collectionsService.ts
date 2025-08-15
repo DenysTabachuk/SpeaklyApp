@@ -16,17 +16,16 @@ export type AddNewCollectionResponse = {
   error?: string;
 };
 
-export async function getUserCollections(
-  token: string
-): Promise<GetUserCollectionsResponse> {
+export async function getUserCollections(token: string) {
   const response = await fetch("http://localhost:3000/collections", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  const data = await response.json();
-  return data as GetUserCollectionsResponse;
+  // const data = await response.json();
+  // return data as GetUserCollectionsResponse;
+  return response;
 }
 
 export async function addNewCollection(

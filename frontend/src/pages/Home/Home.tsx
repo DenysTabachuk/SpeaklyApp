@@ -27,7 +27,14 @@ export default function HomePage() {
     const fetchCollections = async () => {
       setIsLoading(true);
       try {
-        const responseData = await getUserCollections(token);
+        const response = await getUserCollections(token);
+
+        if (response.status === 401) {
+          navigate("/login"); // мб просто на оновлення токена змінити
+        }
+
+        const responseData = await response.json();
+        // console.log("responseData", response);
         if ("error" in responseData && responseData.error) {
           setError(responseData.error);
         } else {

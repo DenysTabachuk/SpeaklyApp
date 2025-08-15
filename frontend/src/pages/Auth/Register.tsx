@@ -5,17 +5,28 @@ import styles from "./AuthForm.module.css";
 import { useActionState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../services/authService";
+import { useHttp } from "../../hooks/useHtpp";
+import { useEffect } from "react";
 
 type RegisterFormState = {
   nickname: string;
   email: string;
   password: string;
   confirmPassword: string;
-  errors: string[];
+  error: string | null;
 };
 
 export default function RegisterPage() {
+  const { data, isLoading, error, execute } = useHttp(registerUser);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (data) {
+      // якщо data не null значить, успішно виконали запит на реєстрацію
+      navigate("/login");
+      console.log(data);
+    }
+  }, [data, navigate]);
 
   const handleSubmit = async (state: RegisterFormState, formData: FormData) => {
     const userInfo = {
@@ -25,26 +36,13 @@ export default function RegisterPage() {
       confirmPassword: String(formData.get("confirm-password") || ""),
     };
 
-    const errors: string[] = [];
-
     if (userInfo.password !== userInfo.confirmPassword) {
-      errors.push("Паролі не однакові");
+      return { ...userInfo, error: "Паролі не однакові" };
     }
 
-    if (errors.length === 0) {
-      try {
-        const response = await registerUser(userInfo);
-        if (response.error) {
-          errors.push(response.error);
-        } else {
-          navigate("/login");
-        }
-      } catch (err) {
-        errors.push(err instanceof Error ? err.message : "Невідома помилка");
-      }
-    }
+    await execute(userInfo);
 
-    return { ...userInfo, errors };
+    return { ...userInfo, error: null };
   };
 
   const [formState, formAction] = useActionState(handleSubmit, {
@@ -52,8 +50,12 @@ export default function RegisterPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    errors: [],
+    error: null,
   });
+
+  const errorMessages: string[] = [];
+  if (formState.error) errorMessages.push(formState.error); // клієнтська
+  if (error) errorMessages.push(error); // серверна
 
   return (
     <form action={formAction} className={styles.authForm}>
@@ -67,6 +69,7 @@ export default function RegisterPage() {
         required
         defaultValue={formState.nickname}
         minLength={4}
+        disabled={isLoading}
       />
 
       <Input
@@ -75,6 +78,7 @@ export default function RegisterPage() {
         name="email"
         required
         defaultValue={formState.email}
+        disabled={isLoading}
       />
 
       <Input
@@ -85,6 +89,7 @@ export default function RegisterPage() {
         required
         defaultValue={formState.password}
         minLength={6}
+        disabled={isLoading}
       />
 
       <Input
@@ -95,11 +100,14 @@ export default function RegisterPage() {
         required
         defaultValue={formState.confirmPassword}
         minLength={6}
+        disabled={isLoading}
       />
+      {/* toDO: зробити плавну появу та зникнення */}
+      <ErrorBox errors={errorMessages} />
 
-      <ErrorBox errors={formState.errors}></ErrorBox>
-
-      <Button glowing>Зареєструватися</Button>
+      <Button glowing disabled={isLoading}>
+        Зареєструватися
+      </Button>
     </form>
   );
 }

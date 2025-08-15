@@ -11,13 +11,11 @@ export type loginData = {
 };
 
 export async function registerUser(data: RegisterData) {
-  const response = await fetch("http://localhost:3000/register", {
+  return fetch("http://localhost:3000/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-
-  return response.json();
 }
 
 export async function loginUser(data: loginData) {

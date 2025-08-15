@@ -4,6 +4,11 @@ type ErrorBoxPropsType = {
   errors?: string[];
 };
 
+const errorMessages: Record<string, string> = {
+  "Invalid credentials": "Невірний email або пароль",
+  // можна додавати інші
+};
+
 export default function ErrorBox({ errors = [] }: ErrorBoxPropsType) {
   return (
     errors?.length > 0 && (
@@ -11,7 +16,7 @@ export default function ErrorBox({ errors = [] }: ErrorBoxPropsType) {
         <ul>
           {errors.map((error) => (
             <li key={error}>
-              <b>{error}</b>
+              <b>{errorMessages[error] || error}</b>
             </li>
           ))}
         </ul>

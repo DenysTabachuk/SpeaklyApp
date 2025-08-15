@@ -1,33 +1,58 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-// Тип для асинхронної функції, яку ми передаємо в хук
-// T - це тип даних, які повертає функція
-type AsyncFunction<T> = () => Promise<T>;
+type AsyncFunction<T, A = void> = (args: A) => Promise<T>;
 
-export function useHttp<T>(asyncFunction: AsyncFunction<T>) {
+// У TypeScript Generics — це спосіб зробити функції, класи або типи універсальними, тобто такими,
+// що можуть працювати з різними типами даних, не прив’язуючись до конкретного типу заздалегідь.
+
+// function identity<T>(value: T): T {
+//   return value;
+// }
+
+// const num = identity(42);      // TypeScript розуміє, що T = number
+// const str = identity("hello"); // TypeScript розуміє, що T = string
+
+// type AsyncFunction<T, A = void>
+// Ми створюємо тип, який описує функцію.
+// <T, A = void> — це Generics:
+// T — тип результату, який повертає функція (Promise<T>).
+// A — тип аргументу, який приймає функція.
+// = void — значення за замовчуванням. Якщо аргументів немає, можна не вказувати тип при використанні.
+
+// (args: A) => Promise<T>
+// Це описує сигнатуру функції.
+// args: A — функція приймає один аргумент типу A.
+// => Promise<T> — функція повертає Promise, який при виконанні дасть результат типу T.
+
+export function useHttp<T, A = void>(asyncFunction: AsyncFunction<T, A>) {
   const [data, setData] = useState<T | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const execute = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const result = await asyncFunction();
+  const execute = async (args: A) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await asyncFunction(args);
+      // console.log("useHttp() result:", result);
+      if (result instanceof Response) {
+        // Якщо функція повертає Response, перевіряємо статус
+        const json = await result.json();
+        // console.log("useHttp() json: ", json);
+        if (!result.ok) {
+          throw new Error(json.error || "HTTP error");
+        }
+        setData(json);
+      } else {
+        // Якщо функція вже повертає готові дані
         setData(result);
-      } catch (err: any) {
-        // 🔹 Якщо сталася помилка, зберігаємо її у state error
-        // err.message використовується, якщо це стандартний об'єкт помилки
-        setError(err.message || "Something went wrong");
-      } finally {
-        setIsLoading(false);
       }
-    };
+    } catch (err: any) {
+      setError(err?.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    //  Виконуємо асинхронну функцію execute
-    execute();
-  }, [asyncFunction]);
-
-  return { data, isLoading, error };
+  return { data, isLoading, error, execute };
 }

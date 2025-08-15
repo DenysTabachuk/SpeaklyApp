@@ -7,16 +7,26 @@ import { useActionState } from "react";
 import { loginUser } from "../../services/authService";
 import { authActions } from "../../store/authSlice";
 import { useDispatch } from "react-redux";
+import { useHttp } from "../../hooks/useHtpp";
+import { useEffect } from "react";
 
 type LoginFormState = {
   email: string;
   password: string;
-  errors: string[];
 };
 
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { data, isLoading, error, execute } = useHttp(loginUser);
+
+  useEffect(() => {
+    if (data) {
+      // якщо data не null значить, успішно виконали запит на авторизацію
+      dispatch(authActions.login(data));
+      navigate("/");
+    }
+  }, [data, dispatch, navigate]);
 
   const handleSubmit = async (state: LoginFormState, formData: FormData) => {
     const loginFormData = {
@@ -24,32 +34,13 @@ export default function Login() {
       password: String(formData.get("password") || ""),
     };
 
-    const errors: string[] = [];
-
-    if (errors.length === 0) {
-      try {
-        const response = await loginUser(loginFormData);
-        if (response.error) {
-          errors.push(response.error);
-        } else {
-          console.log("dispatch login");
-          console.log(response);
-
-          dispatch(authActions.login(response));
-          navigate("/");
-        }
-      } catch (err) {
-        errors.push(err instanceof Error ? err.message : "Невідома помилка");
-      }
-    }
-
-    return { ...loginFormData, errors };
+    execute(loginFormData);
+    return loginFormData;
   };
 
   const [formState, formAction] = useActionState(handleSubmit, {
     email: "",
     password: "",
-    errors: [],
   });
 
   return (
@@ -61,6 +52,7 @@ export default function Login() {
         name="email"
         required
         defaultValue={formState.email}
+        disabled={isLoading}
       />
 
       <Input
@@ -70,11 +62,12 @@ export default function Login() {
         name="password"
         required
         defaultValue={formState.password}
+        disabled={isLoading}
       />
+      {/* toDO: зробити плавну появу та зникнення */}
+      <ErrorBox errors={error ? [error] : []} />
 
-      <ErrorBox errors={formState.errors}></ErrorBox>
-
-      <Button glowing>Увійти</Button>
+      <Button glowing> {isLoading ? "Завантаження..." : "Увійти"}</Button>
     </form>
   );
 }

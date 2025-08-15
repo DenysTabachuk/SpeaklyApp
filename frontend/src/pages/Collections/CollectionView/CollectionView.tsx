@@ -121,13 +121,7 @@ export default function CollectionView() {
             ></TermDefinitionList>
           </>
         ) : (
-          <Button
-            glowing
-            onClick={handleAddNewTerm}
-            style={{
-              width: "200px",
-            }}
-          >
+          <Button glowing onClick={handleAddNewTerm}>
             +Новий термін
           </Button>
         )}

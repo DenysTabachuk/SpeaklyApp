@@ -21,11 +21,9 @@ export async function registerUser(data: RegisterData) {
 }
 
 export async function loginUser(data: loginData) {
-  const response = await fetch("http://localhost:3000/login", {
+  return fetch("http://localhost:3000/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-
-  return response.json();
 }

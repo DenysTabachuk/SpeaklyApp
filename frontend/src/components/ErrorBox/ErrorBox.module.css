@@ -3,11 +3,21 @@
   color: #b30000;
   border: 1px solid #ff4d4d;
   border-radius: 8px;
+  padding: 0 15px; /* початково без вертикального падінгу */
+  margin-bottom: 0;
+  font-size: medium;
+  box-shadow: 0px 2px 5px #b30000;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 1.25s ease;
+}
+
+.errorBox.show {
+  opacity: 1;
   padding: 10px 15px;
   margin-bottom: 15px;
-  font-size: medium;
-
-  box-shadow: 0px 2px 5px #b30000;
+  max-height: 200px; /* достатньо для тексту */
 }
 
 .errorBox ul {

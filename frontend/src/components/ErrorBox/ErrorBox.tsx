@@ -7,7 +7,7 @@ type ErrorBoxPropsType = {
 export default function ErrorBox({ errors = [] }: ErrorBoxPropsType) {
   return (
     errors?.length > 0 && (
-      <div className={styles.errorBox}>
+      <div className={`${styles.errorBox} ${errors.length > 0 && styles.show}`}>
         <ul>
           {errors.map((error) => (
             <li key={error}>

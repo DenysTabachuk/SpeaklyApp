@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { getUserCollections } from "../../../services/collectionsService";
+import { getUserCollections } from "../../../services/termCollectionsService";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../store/store";
-import type { Collection } from "../../../services/collectionsService";
+import type { Collection } from "../../../services/termCollectionsService";
 import Button from "../../../components/Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import CollectionConatiner from "./components/CollectionContainer/CollectionContainer";

@@ -1,4 +1,4 @@
-import type { Collection } from "../../../../../services/collectionsService";
+import type { Collection } from "../../../../../services/termCollectionsService";
 import styles from "./CollectionCointainer.module.css";
 import { Link } from "react-router-dom";
 

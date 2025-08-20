@@ -1,5 +1,5 @@
-import type { Suggestion } from "./CollectionView";
-import styles from "./CollectionView.module.css";
+import type { Suggestion } from "../../../../services/termCollectionsService";
+import styles from "../CollectionView.module.css";
 
 type TermSuggestionContainerParams = {
   termSuggestionList: Suggestion[];

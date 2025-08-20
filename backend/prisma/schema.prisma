@@ -25,11 +25,26 @@ model User {
 
 model Collection {
   id Int @id @default(autoincrement())
+  userId Int
   name String
   description String?
-  userId Int
+  terms Term[]
   user User @relation(fields: [userId], references: [id])
   // "user — це поле-об’єкт, який пов'язаний з моделлю User,
   //  і зв'язок будується через стовпець userId у цій таблиці, який посилається на стовпець id у таблиці User."
 }
 
+model Term {
+  id            Int    @id @default(autoincrement())
+  collectionId  Int
+  word          String
+  definitions   Definition[]
+  collection    Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+}
+
+model Definition {
+  id           Int    @id @default(autoincrement())
+  termId       Int
+  text         String
+  term         Term @relation(fields: [termId], references: [id], onDelete: Cascade)
+}

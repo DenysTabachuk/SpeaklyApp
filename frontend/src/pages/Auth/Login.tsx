@@ -7,7 +7,7 @@ import { useActionState } from "react";
 import { loginUser } from "../../services/authService";
 import { authActions } from "../../store/authSlice";
 import { useDispatch } from "react-redux";
-import { useHttp } from "../../hooks/useHtpp";
+import { useHttp } from "../../hooks/useHttp";
 import { useEffect } from "react";
 
 type LoginFormState = {
@@ -67,7 +67,9 @@ export default function Login() {
       {/* toDO: зробити плавну появу та зникнення */}
       <ErrorBox errors={error ? [error] : []} />
 
-      <Button glowing> {isLoading ? "Завантаження..." : "Увійти"}</Button>
+      <Button glowing disabled={isLoading}>
+        {isLoading ? "Завантаження..." : "Увійти"}
+      </Button>
     </form>
   );
 }

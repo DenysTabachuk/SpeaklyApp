@@ -2,7 +2,7 @@ import Input from "../../../components/Inputs/Input";
 import Textarea from "../../../components/Inputs/TextArea";
 import Button from "../../../components/Button/Button";
 import styles from "./AddNewCollection.module.css";
-import { addNewCollection } from "../../../services/collectionsService";
+import { addNewCollection } from "../../../services/termCollectionsService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";

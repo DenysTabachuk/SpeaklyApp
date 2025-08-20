@@ -3,6 +3,10 @@
   width: 900px;
 }
 
+.newTermForm {
+  width: 600px;
+}
+
 ul.termList {
   list-style: none;
   padding: 0;
@@ -30,4 +34,28 @@ ul.termList li:hover {
   box-shadow: 0 0 20px 10px #8335bb;
   background-position: 100% 0%; /* перелив при наведенні */
   font-size: larger;
+}
+
+.definitionInputButton {
+  display: flex;
+  gap: 10px;
+}
+
+.definitionInputButton > :first-child {
+  flex-grow: 1;
+}
+
+.defenitionInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.PartOfSpeechBadge {
+  border-radius: 10px;
+  background: linear-gradient(90deg, #ffffff 0%, #472090 100%);
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

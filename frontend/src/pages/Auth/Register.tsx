@@ -5,7 +5,7 @@ import styles from "./AuthForm.module.css";
 import { useActionState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../services/authService";
-import { useHttp } from "../../hooks/useHtpp";
+import { useHttp } from "../../hooks/useHttp";
 import { useEffect } from "react";
 
 type RegisterFormState = {
@@ -106,7 +106,7 @@ export default function RegisterPage() {
       <ErrorBox errors={errorMessages} />
 
       <Button glowing disabled={isLoading}>
-        Зареєструватися
+        {isLoading ? "Завантаження..." : "Зареєструватися"}
       </Button>
     </form>
   );

@@ -57,7 +57,7 @@ export async function getCollectionById(
 ) {
   const collectionId = parseInt(req.params.collectionId, 10);
   if (isNaN(collectionId)) {
-    return res.status(400).json({ error: "Invalid collection ID" });
+    return res.status(400).json("Invalid collection ID");
   }
 
   const collection = await prisma.collection.findUnique({
@@ -65,8 +65,8 @@ export async function getCollectionById(
   });
 
   if (!collection) {
-    return res.status(404).json({ error: "Collection not found" });
+    return res.status(404).json("Collection not found");
   }
 
-  return res.status(200).json({ collection });
+  return res.status(200).json(collection);
 }

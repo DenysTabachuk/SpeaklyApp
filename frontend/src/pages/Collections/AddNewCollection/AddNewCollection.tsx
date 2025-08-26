@@ -2,7 +2,7 @@ import Input from "../../../components/Inputs/Input";
 import Textarea from "../../../components/Inputs/TextArea";
 import Button from "../../../components/Button/Button";
 import styles from "./AddNewCollection.module.css";
-import { addNewCollection } from "../../../services/termCollectionsService";
+import { addNewCollection } from "../../../services/collectionService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -37,12 +37,12 @@ export default function AddNewCollectionPage() {
       {error && <p>{error}</p>}
 
       <div className={styles.buttonContainer}>
-        <Button glowing>
+        <Button glowing accept>
           <b>Зберегти</b>
         </Button>
 
         <Link to="/collections">
-          <Button glowing>
+          <Button glowing decline>
             <b>Відмінити</b>
           </Button>
         </Link>

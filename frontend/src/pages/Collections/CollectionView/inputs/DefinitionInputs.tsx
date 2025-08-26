@@ -1,27 +1,31 @@
 import Button from "../../../../components/Button/Button";
 import Input from "../../../../components/Inputs/Input";
-import PartOfSpeechBadge from "./PartOfSpeechBadge";
-import TermDefinitionList from "../lists/TermDefinitionsList";
-import type { Definition } from "../../../../services/termCollectionsService";
-import style from "../CollectionView.module.css";
+import DefinitionList from "./lists/DefinitionList";
+import type { Definition } from "../../../../services/collectionService";
+import style from "./Inputs.module.css";
+import deleteIcon from "../../../../assets/delete-icon.png";
 import { useState } from "react";
 
 type DefinitionInputsPropts = {
   definitions: Definition[] | null;
+  userDefinitions?: Definition[];
 };
 
 export default function DefinitionInputs({
   definitions,
+  userDefinitions = [],
 }: DefinitionInputsPropts) {
-  const [myDefinitions, setMyDefinitions] = useState([
-    { text: "", partOfSpeech: "", inFocus: false },
-  ]);
+  const [myDefinitions, setMyDefinitions] = useState(
+    userDefinitions.length > 0
+      ? userDefinitions.map((def) => ({
+          text: def.text,
+          inFocus: false,
+        }))
+      : [{ text: "", inFocus: false }]
+  );
 
   const addNewDefinition = () => {
-    setMyDefinitions([
-      ...myDefinitions,
-      { text: "", partOfSpeech: "", inFocus: false },
-    ]);
+    setMyDefinitions([...myDefinitions, { text: "", inFocus: false }]);
   };
 
   const handleDefinitionInputChange = (
@@ -33,24 +37,17 @@ export default function DefinitionInputs({
 
     updatedDefinitions[index] = {
       text: event.target.value,
-      partOfSpeech: defiinitionWeChanging.partOfSpeech,
       inFocus: true,
     };
     setMyDefinitions(updatedDefinitions);
   };
 
-  const handleDefinitionSelect = (
-    index: number,
-    defitinitonText: string,
-    partOfSpeech: string
-  ) => {
+  const handleDefinitionSelect = (index: number, defitinitonText: string) => {
     console.log(index, defitinitonText);
 
     const newMyDefinitions = [...myDefinitions];
     newMyDefinitions[index] = {
-      // text: `[${partOfSpeech}] defitinitonText`,
       text: defitinitonText,
-      partOfSpeech: partOfSpeech,
       inFocus: false,
     };
     setMyDefinitions(newMyDefinitions);
@@ -83,17 +80,18 @@ export default function DefinitionInputs({
               value={definition.text}
               name="definitions"
             />
-            {definition.partOfSpeech !== "" && (
-              <PartOfSpeechBadge partOfSpeech={definition.partOfSpeech} />
-            )}
 
-            <Button type="button" onClick={() => handleRemoveDefinition(index)}>
-              -
-            </Button>
+            <button
+              type="button"
+              className={style.deleteDefinitionButton}
+              onClick={() => handleRemoveDefinition(index)}
+            >
+              <img className="icon" src={deleteIcon} width={32} height={32} />
+            </button>
           </div>
 
           {definitions && definition.inFocus && (
-            <TermDefinitionList
+            <DefinitionList
               definitionIndex={index}
               definitionText={definition.text}
               definitionsList={definitions}

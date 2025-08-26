@@ -1,0 +1,58 @@
+.TermAndDefinitionsList {
+  padding: 0;
+  margin: 0;
+}
+
+.Term {
+  width: 700px;
+  padding: 10px;
+  margin: 10px 0;
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid white;
+  background-color: var(--primary-color);
+  box-shadow: 0 5px 10px var(--shadow-color);
+  border: 1px solid black;
+  border-radius: 15px;
+
+  background-color: var(--primary-color);
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  transition: 0.5s ease;
+}
+
+.Term:hover {
+  box-shadow: 0 0 20px 10px #632093;
+  background-position: 100% 0%; /* перелив при наведенні */
+  scale: 1.05;
+}
+
+.TermWordContainer {
+  border-right: 1px solid white;
+  padding: 15px;
+  min-width: 80px;
+}
+
+.TermDefinitionsContainer {
+  margin: 0;
+  padding: 0;
+  padding: 15px;
+  flex-grow: 1;
+}
+
+.Definition {
+  padding: 15px;
+  border-bottom: 1px solid white;
+}
+
+.buttonContainer button {
+  background: transparent;
+  border: none;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}

@@ -1,0 +1,21 @@
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.buttonContainer button {
+  flex-grow: 1;
+}
+
+.newTermForm {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 10px 0;
+}

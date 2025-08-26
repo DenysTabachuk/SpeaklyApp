@@ -24,7 +24,7 @@ export default function Login() {
     if (data) {
       // якщо data не null значить, успішно виконали запит на авторизацію
       dispatch(authActions.login(data));
-      navigate("/");
+      navigate("/collections");
     }
   }, [data, dispatch, navigate]);
 

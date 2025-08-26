@@ -12,7 +12,7 @@ export default function Header() {
     <header className={styles.header}>
       <div>
         <h1>
-          <Link to="/">Speakly</Link>
+          <Link to="/collections">Speakly</Link>
         </h1>
       </div>
       <div>

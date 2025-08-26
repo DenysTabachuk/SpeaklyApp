@@ -1,0 +1,40 @@
+.ModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* затемнення фону */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.Modal {
+  width: 300px;
+  background: linear-gradient(to right, rgb(108, 29, 139), rgb(56, 1, 74));
+  padding: 20px;
+  border-radius: 15px;
+  position: fixed; /* фіксуємо відносно viewport */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* центр по обох осях */
+  text-align: justify;
+  box-shadow: 0 0 40px 10px #3a065d;
+  color: white;
+}
+
+.ButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ButtonContainer button {
+  flex-grow: 1;
+}
+
+.ButtonContain button {
+  min-width: 200px;
+}

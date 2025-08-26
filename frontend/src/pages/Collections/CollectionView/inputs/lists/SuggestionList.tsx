@@ -1,12 +1,12 @@
-import type { Suggestion } from "../../../../services/termCollectionsService";
-import styles from "../CollectionView.module.css";
+import type { Suggestion } from "../../../../../services/collectionService";
+import styles from "../Inputs.module.css";
 
 type TermSuggestionContainerParams = {
   termSuggestionList: Suggestion[];
   termSuggestionOnClick: (selectedTerm: string) => void;
 };
 
-export default function TermSuggestionList({
+export default function SuggestionList({
   termSuggestionList,
   termSuggestionOnClick,
 }: TermSuggestionContainerParams) {

@@ -1,16 +1,17 @@
-import type { Suggestion } from "../../../../services/termCollectionsService";
-import { getTermSuggestion } from "../../../../services/termCollectionsService";
-import TermSuggestionList from "../lists/TermSuggestionsList";
+import type { Suggestion } from "../../../../services/termService";
+import { getTermSuggestion } from "../../../../services/termService";
+import SuggestionList from "./lists/SuggestionList";
 import Input from "../../../../components/Inputs/Input";
 import { useState } from "react";
 import { useHttp } from "../../../../hooks/useHttp";
 
 type TermInputProps = {
+  term: string;
   fetchDefinitions: (term: string) => void;
 };
 
-export default function TermInput({ fetchDefinitions }: TermInputProps) {
-  const [newTerm, setNewTerm] = useState("");
+export default function TermInput({ term, fetchDefinitions }: TermInputProps) {
+  const [newTerm, setNewTerm] = useState(term || "");
   const [termIsEntered, setTermIsEntered] = useState(false);
 
   const {
@@ -44,7 +45,7 @@ export default function TermInput({ fetchDefinitions }: TermInputProps) {
         name="term"
       />
       {suggestions && !termIsEntered && (
-        <TermSuggestionList
+        <SuggestionList
           termSuggestionList={suggestions}
           termSuggestionOnClick={handleSuggestionSelect}
         />

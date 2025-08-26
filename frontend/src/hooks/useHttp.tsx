@@ -18,7 +18,6 @@ export function useHttp<T, Args extends any[] = []>(
       if (result instanceof Response) {
         const json = await result.json();
         if (!result.ok) {
-          console.log(json);
           throw new Error(json.error || "HTTP error");
         }
         setData(json as T); // приводимо до T

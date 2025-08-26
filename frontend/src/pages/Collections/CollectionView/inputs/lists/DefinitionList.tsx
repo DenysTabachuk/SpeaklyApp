@@ -1,14 +1,14 @@
-import type { Definition } from "../../../../services/termCollectionsService";
-import styles from "../CollectionView.module.css";
+import type { Definition } from "../../../../../services/collectionService";
+import styles from "../Inputs.module.css";
 
 type DefinitionListProps = {
   definitionIndex: number;
   definitionText: string;
   definitionsList: Definition[];
-  definitionOnClick: (index: number, def: string, partOfSpeech: string) => void;
+  definitionOnClick: (index: number, def: string) => void;
 };
 
-export default function TermDefinitionList({
+export default function DefinitionList({
   definitionIndex,
   definitionText,
   definitionsList,
@@ -24,14 +24,12 @@ export default function TermDefinitionList({
       {filteredDefinitions.map((def, idx) => (
         <li
           key={idx}
-          onMouseDown={() =>
-            definitionOnClick(definitionIndex, def.text, def.partOfSpeech)
-          }
+          onMouseDown={() => definitionOnClick(definitionIndex, def.text)}
         >
           {/* mousedown → коли користувач натиснув кнопку миші (ще до відпускання)
               mouseup → коли відпустив кнопку миші
               click → відпрацьовує тільки після mousedown + mouseup */}
-          {`[${def.partOfSpeech}]  ${def.text}`}
+          {def.text}
         </li>
       ))}
     </ul>

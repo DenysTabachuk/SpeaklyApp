@@ -18,7 +18,6 @@ export async function createNewCollection(
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    // console.log("user here: ", req.user);
     const newCollection = await prisma.collection.create({
       data: {
         name,
@@ -44,7 +43,7 @@ export async function getUserCollections(
       orderBy: { id: "desc" },
     });
 
-    res.status(200).json({ collections });
+    res.status(200).json(collections);
   } catch (error) {
     next(error);
   }
@@ -62,6 +61,14 @@ export async function getCollectionById(
 
   const collection = await prisma.collection.findUnique({
     where: { id: collectionId },
+    // щоб одразу підтягувати терміни та їх визначення
+    include: {
+      terms: {
+        include: {
+          definitions: true,
+        },
+      },
+    },
   });
 
   if (!collection) {

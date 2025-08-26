@@ -1,6 +1,6 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Header from "./components/Header/Header";
-import Collections from "./pages/Collections/Collections/Collections";
+import MyCollections from "./pages/Collections/MyCollectionsList/MyCollections";
 import AddNewCollection from "./pages/Collections/AddNewCollection/AddNewCollection";
 import CollectionView from "./pages/Collections/CollectionView/CollectionView";
 import Register from "./pages/Auth/Register";
@@ -17,7 +17,7 @@ function App() {
           <Route path="/" element={<Home />} />
 
           <Route path="collections">
-            <Route index element={<Collections />} />
+            <Route index element={<MyCollections />} />
             <Route path="new" element={<AddNewCollection />} />{" "}
             <Route path=":id" element={<CollectionView />} />{" "}
           </Route>

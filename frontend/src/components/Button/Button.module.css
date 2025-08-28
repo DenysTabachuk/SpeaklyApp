@@ -8,8 +8,9 @@
   border: none;
   color: white;
   cursor: pointer;
+  border: 1px solid black;
 
-  background: linear-gradient(120deg, #4d365d, #56118a, #2f024f);
+  background: linear-gradient(120deg, #401162, #56118a, #1f0234);
   background-size: 200% 100%;
   transition: background-position 1.5s ease, box-shadow 0.4s ease;
 }

@@ -1,6 +1,6 @@
 import Button from "../../../../components/Button/Button";
-import TermInput from "../inputs/TermInput";
-import DefinitionInputs from "../inputs/DefinitionInputs";
+import TermInput from "./inputs/TermInput";
+import DefinitionInputs from "./inputs/DefinitionInputs";
 import { useHttp } from "../../../../hooks/useHttp";
 import {
   addNewTerm,
@@ -40,7 +40,6 @@ export default function TermForm({
 
   useEffect(() => {
     if (createdTerm) {
-      console.log("onSubmitSuccess, ", createdTerm);
       onSubmitSuccess(createdTerm);
     }
 

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../store/store";
 import type { Collection } from "../../../services/collectionService";
 import Button from "../../../components/Button/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import CollectionConatiner from "./components/CollectionContainer/CollectionContainer";
 import styles from "./MyCollections.module.css";
 
@@ -13,6 +13,7 @@ import { useHttp } from "../../../hooks/useHttp";
 export default function CollectionsPage() {
   const token = useSelector((state: RootState) => state.auth.token);
   const navigate = useNavigate();
+  const location = useLocation(); // ⬅️ от тут
 
   const {
     data: collections,
@@ -28,7 +29,7 @@ export default function CollectionsPage() {
     }
 
     fetchCollections(token);
-  }, []);
+  }, [token, location.key]); // ⬅️ важливо! key міняється при кожній навігації
 
   if (error) {
     return <p>{error}</p>;

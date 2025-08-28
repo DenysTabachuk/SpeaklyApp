@@ -60,6 +60,7 @@ form {
 }
 
 .icon {
+  height: 32px;
   filter: brightness(0) invert(1); /* робимо зображення білим */
   transition: transform 0.3s ease, filter 0.3s ease;
 }
@@ -68,4 +69,8 @@ form {
   transform: scale(1.1);
   filter: brightness(0) saturate(100%) invert(65%) sepia(91%) hue-rotate(7deg)
     saturate(2000%) brightness(105%);
+}
+
+label {
+  font-size: x-large;
 }

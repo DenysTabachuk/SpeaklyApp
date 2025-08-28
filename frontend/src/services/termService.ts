@@ -49,8 +49,6 @@ export async function addNewTerm(
   token: string,
   term: Term
 ) {
-  console.log(collectionId, token, term);
-
   return fetch(`http://localhost:3000/collections/${collectionId}/terms`, {
     method: "POST",
     headers: {
@@ -78,8 +76,6 @@ export async function deleteTerm(
 }
 
 export async function editTerm(term: Term, token: string) {
-  console.log("editTerm");
-  console.log(term);
   return fetch(
     `http://localhost:3000/collections/${term.collectionId}/terms/${term.id}`,
     {

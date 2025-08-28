@@ -1,30 +1,36 @@
 import type { Term } from "../../../../services/termService";
 import styles from "./Lists.module.css";
-import TermAndDefinitionsItem from "./TermAndDefinitionsItem";
+import TermItem from "./TermItem";
 import ConfirmModal from "../../../../components/Modal/ConfirmModal";
 import { deleteTerm } from "../../../../services/termService";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useHttp } from "../../../../hooks/useHttp";
-import TermForm from "../forms/TermForm";
+import TermForm from "../TermForm/TermForm";
 
-type TermAndDefinitionsListProps = {
+type TermListProps = {
   terms: Term[];
 };
 
 export type EditableTerm = Term & { isEditing: boolean };
 
 // Обробку помилок додати
-export default function TermAndDefinitionsList({
-  terms,
-}: TermAndDefinitionsListProps) {
+export default function TermList({ terms }: TermListProps) {
   const { id: collectionId } = useParams<{ id: string }>();
 
   const [editableTerms, setEditableTerms] = useState<EditableTerm[]>(
     terms.map((t) => ({ ...t, isEditing: false }))
   );
+
   const [showConfirmModal, setShowConfrimModal] = useState(false);
   const [deletingIndex, setDeletingIndex] = useState<number | null>(null);
+
+  console.log("TermAndDefinitionsList terms:", terms);
+  console.log("TermAndDefinitionsList editableTerms:", editableTerms);
+
+  useEffect(() => {
+    setEditableTerms(terms.map((t) => ({ ...t, isEditing: false })));
+  }, [terms]);
 
   const {
     data,
@@ -69,7 +75,6 @@ export default function TermAndDefinitionsList({
   };
 
   const onSubmitSuccess = (editedTerm: Term, index: number) => {
-    console.log("onSubmitSuccess");
     const termsCopy = [...editableTerms];
     const term = { ...editedTerm, isEditing: false };
 
@@ -98,12 +103,12 @@ export default function TermAndDefinitionsList({
             onCancel={() => {}}
           />
         ) : (
-          <TermAndDefinitionsItem
+          <TermItem
             term={term}
             index={index}
             onEdit={handleTermEdit}
             onDelete={() => showModal(index)}
-          ></TermAndDefinitionsItem>
+          ></TermItem>
         )
       )}
     </ul>

@@ -44,6 +44,7 @@ export async function register(
 
 export async function login(req: Request, res: Response, next: NextFunction) {
   try {
+    console.log(req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {

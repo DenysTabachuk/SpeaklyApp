@@ -1,8 +1,7 @@
-import type { EditableTerm } from "./TermAndDefinitionsList";
+import type { EditableTerm } from "./TermList";
 import styles from "./Lists.module.css";
 import editIcon from "../../../../assets/edit-icon.png";
 import deleteIcon from "../../../../assets/delete-icon.png";
-import TermForm from "../forms/TermForm";
 
 type TermAndDefinitionsItemProps = {
   term: EditableTerm;
@@ -11,7 +10,7 @@ type TermAndDefinitionsItemProps = {
   onDelete: () => void;
 };
 
-export default function TermAndDefinitionsItem({
+export default function TermItem({
   term,
   index,
   onEdit,

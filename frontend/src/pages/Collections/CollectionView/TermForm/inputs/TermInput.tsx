@@ -1,9 +1,9 @@
-import type { Suggestion } from "../../../../services/termService";
-import { getTermSuggestion } from "../../../../services/termService";
+import type { Suggestion } from "../../../../../services/termService";
+import { getTermSuggestion } from "../../../../../services/termService";
 import SuggestionList from "./lists/SuggestionList";
-import Input from "../../../../components/Inputs/Input";
+import Input from "../../../../../components/Inputs/Input";
 import { useState } from "react";
-import { useHttp } from "../../../../hooks/useHttp";
+import { useHttp } from "../../../../../hooks/useHttp";
 
 type TermInputProps = {
   term: string;

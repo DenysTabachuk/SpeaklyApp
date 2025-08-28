@@ -19,7 +19,6 @@ if (token) {
     };
   } catch (e) {
     console.error("Invalid token", e);
-    console.log("remowing token");
     localStorage.removeItem("token");
   }
 }

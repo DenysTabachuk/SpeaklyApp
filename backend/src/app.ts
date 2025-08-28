@@ -7,20 +7,26 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // дозволяємо запити з фронтенда
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
 
-app.use(express.json());
+app.use(express.json()); // ✅ для JSON
+app.use(express.urlencoded({ extended: true })); // ✅ якщо колись прийде form-urlencoded
+
+// Статика для завантажених файлів
+app.use("/uploads", express.static("uploads"));
 
 // Тестовий роут
 app.get("/", (req, res) => {
   res.send("Hello from TypeScript backend!");
 });
 
-// Підключаємо всі маршрути
+// Підключаємо маршрути
 app.use(routes);
+
+// Middleware для обробки помилок
 app.use(errorHandler);
 
 export default app;

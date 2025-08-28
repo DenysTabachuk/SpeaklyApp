@@ -31,5 +31,5 @@ export function useHttp<T, Args extends any[] = []>(
     }
   };
 
-  return { data, isLoading, error, execute };
+  return { data, setData, isLoading, error, execute };
 }

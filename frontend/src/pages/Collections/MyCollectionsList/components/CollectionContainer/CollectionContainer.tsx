@@ -11,14 +11,19 @@ type CollectionConatinerProps = {
 export default function CollectionConatiner({
   collections,
 }: CollectionConatinerProps) {
-  console.log(collections);
-
   return (
     <>
       <ul className={styles.collectionContainer}>
         {collections.map((collection) => (
           <li key={collection.id} className={styles.collectionItem}>
-            <img src={defaultImage} alt="" />
+            <img
+              src={
+                collection.imagePath
+                  ? "http://localhost:3000" + collection.imagePath
+                  : defaultImage
+              }
+              alt=""
+            />
 
             <Link
               to={String(collection.id)}

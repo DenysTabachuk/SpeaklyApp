@@ -3,18 +3,9 @@ import type { Term } from "./termService";
 export type Collection = {
   id?: number;
   name: string;
-  description: string | null; // бо в схемі Prisma description може бути null
+  description: string | null;
+  imagePath?: string;
   terms?: Term[];
-};
-
-export type GetUserCollectionsResponse = {
-  collections: Collection[];
-  error: string;
-};
-
-export type AddNewCollectionResponse = {
-  collection?: Collection;
-  error?: string;
 };
 
 export async function getUserCollections(token: string) {
@@ -35,19 +26,46 @@ export async function getCollectionById(collectionID: string, token: string) {
   });
 }
 
-export async function addNewCollection(
-  сollection: Collection,
-  token: string
-): Promise<AddNewCollectionResponse> {
+export async function addNewCollection(formData: FormData, token: string) {
+  console.log("addNewCollection");
   const response = await fetch("http://localhost:3000/collections", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
     },
-    body: JSON.stringify(сollection),
+    body: formData,
   });
 
   const data = await response.json();
-  return data as AddNewCollectionResponse;
+  return data;
+}
+
+export async function editCollection(
+  formData: FormData,
+  token: string,
+  collectionId: string
+) {
+  console.log("editCollection");
+  const response = await fetch(
+    `http://localhost:3000/collections/${collectionId}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    }
+  );
+
+  const data = await response.json();
+  return data;
+}
+
+export async function deleteCollection(collectionId: string, token: string) {
+  return fetch(`http://localhost:3000/collections/${collectionId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }

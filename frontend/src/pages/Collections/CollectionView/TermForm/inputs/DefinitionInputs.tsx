@@ -1,9 +1,9 @@
-import Button from "../../../../components/Button/Button";
-import Input from "../../../../components/Inputs/Input";
+import Button from "../../../../../components/Button/Button";
+import Input from "../../../../../components/Inputs/Input";
 import DefinitionList from "./lists/DefinitionList";
-import type { Definition } from "../../../../services/collectionService";
+import type { Definition } from "../../../../../services/termService";
 import style from "./Inputs.module.css";
-import deleteIcon from "../../../../assets/delete-icon.png";
+import deleteIcon from "../../../../../assets/delete-icon.png";
 import { useState } from "react";
 
 type DefinitionInputsPropts = {
@@ -43,8 +43,6 @@ export default function DefinitionInputs({
   };
 
   const handleDefinitionSelect = (index: number, defitinitonText: string) => {
-    console.log(index, defitinitonText);
-
     const newMyDefinitions = [...myDefinitions];
     newMyDefinitions[index] = {
       text: defitinitonText,

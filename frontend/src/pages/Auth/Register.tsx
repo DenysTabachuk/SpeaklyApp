@@ -24,7 +24,6 @@ export default function RegisterPage() {
     if (data) {
       // якщо data не null значить, успішно виконали запит на реєстрацію
       navigate("/login");
-      console.log(data);
     }
   }, [data, navigate]);
 

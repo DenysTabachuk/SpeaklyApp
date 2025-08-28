@@ -1,0 +1,43 @@
+ul.dropDownMenu {
+  padding: 7px 0;
+  background-color: #30184a;
+  display: inline-block;
+
+  position: absolute;
+  right: 40px;
+  top: 100px;
+  z-index: 100;
+  border: 1px solid white;
+  border-radius: 12px;
+}
+
+ul.dropDownMenu a {
+  text-decoration: none;
+  color: white;
+}
+
+ul.dropDownMenu li {
+  list-style: none;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.5s ease;
+}
+
+ul.dropDownMenu li:hover {
+  background-color: #200133;
+  color: rgb(229, 211, 8);
+}
+
+ul.dropDownMenu li:hover .icon {
+  transform: scale(1.2);
+  filter: brightness(0) saturate(100%) invert(65%) sepia(91%) hue-rotate(7deg)
+    saturate(2000%) brightness(105%);
+}
+
+.icon {
+  height: 32px;
+  transition: 0.5s ease;
+  filter: brightness(0) invert(1); /* робимо зображення білим */
+}

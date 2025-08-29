@@ -4,7 +4,25 @@ import { Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET!;
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET!;
+
+function generateTokens(payload: object) {
+  const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: "30m" });
+  const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, {
+    expiresIn: "7d",
+  });
+  return { accessToken, refreshToken };
+}
+
+function setRefreshCookie(res: Response, refreshToken: string) {
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 днів
+  });
+}
 
 export async function register(
   req: Request,
@@ -15,7 +33,7 @@ export async function register(
     const { nickname: name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      return res.status(400).json({ error: "Missing required fields" });
+      return res.status(400).json({ error: "Всі поля обов'язкові" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -28,7 +46,11 @@ export async function register(
       },
     });
 
-    res.status(201).json(newUser);
+    res.status(201).json({
+      userId: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+    });
   } catch (error) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -44,40 +66,55 @@ export async function register(
 
 export async function login(req: Request, res: Response, next: NextFunction) {
   try {
-    console.log(req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ error: "Invalid credentials" });
+      return res.status(400).json({ error: "Неправильні дані для входу" });
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
-
+    const user = await prisma.user.findUnique({ where: { email } });
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({ error: "Невірний email або пароль" });
     }
 
-    if (!JWT_SECRET) {
-      return res.status(500).json({ error: "JWT_SECRET is not defined" });
-    }
+    const payload = { userId: user.id, email: user.email, name: user.name };
+    const { accessToken, refreshToken } = generateTokens(payload);
 
-    const token = jwt.sign(
-      { userId: user.id, email: user.email, name: user.name },
-      JWT_SECRET,
-      { expiresIn: "24h" }
-    );
+    setRefreshCookie(res, refreshToken);
 
     res.json({
-      token,
-      user: {
-        userId: user.id,
-        name: user.name,
-        email: user.email,
-      },
+      token: accessToken,
+      user: payload,
     });
   } catch (error) {
     next(error);
+  }
+}
+
+export function refreshToken(req: Request, res: Response) {
+  const existingRefreshToken = req.cookies.refreshToken;
+  if (!existingRefreshToken) {
+    return res.status(401).json({ error: "Refresh token відсутній" });
+  }
+
+  try {
+    const decoded = jwt.verify(existingRefreshToken, JWT_REFRESH_SECRET) as {
+      userId: number;
+      email: string;
+      name: string;
+    };
+
+    const payload = {
+      userId: decoded.userId,
+      email: decoded.email,
+      name: decoded.name,
+    };
+    const { accessToken, refreshToken } = generateTokens(payload);
+
+    setRefreshCookie(res, refreshToken);
+
+    res.json({ token: accessToken });
+  } catch (error) {
+    return res.status(403).json({ error: "Недійсний refresh token" });
   }
 }

@@ -1,6 +1,6 @@
 import { error } from "console";
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -25,6 +25,9 @@ export function authMiddleware(
     req.user = decoded;
     next();
   } catch (err) {
+    if (err instanceof TokenExpiredError) {
+      return res.status(401).json({ error: "Token expired" });
+    }
     return res.status(401).json({ error: "Invalid token" });
   }
 }

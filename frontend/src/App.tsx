@@ -11,6 +11,10 @@ import ErrorPage from "./ErrorElement";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { loader as collectionsLoader } from "./pages/Collections/MyCollectionsPage/MyCollectionsPage";
 import { loader as collectionDetailsLoader } from "./pages/Collections/loaders";
+import { action as editCollectionAction } from "./pages/Collections/AddEditCollection/EditCollection";
+import { action as addNewCollectionAction } from "./pages/Collections/AddEditCollection/AddCollection";
+import { action as loginAction } from "./pages/Auth/Login";
+import { action as registerAction } from "./pages/Auth/Register";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +35,7 @@ const router = createBrowserRouter([
           {
             path: "new",
             element: <AddNewCollection />,
+            action: addNewCollectionAction,
           },
           {
             path: ":id",
@@ -40,13 +45,22 @@ const router = createBrowserRouter([
                 element: <CollectionView />,
                 loader: collectionDetailsLoader,
               },
-              { path: "edit", element: <EditCollection /> },
+              {
+                path: "edit",
+                element: <EditCollection />,
+                loader: collectionDetailsLoader,
+                action: editCollectionAction,
+              },
             ],
           },
         ],
       },
-      { path: "register", element: <Register />, errorElement: <ErrorPage /> },
-      { path: "login", element: <Login />, errorElement: <ErrorPage /> },
+      { path: "register", element: <Register />, action: registerAction },
+      {
+        path: "login",
+        element: <Login />,
+        action: loginAction,
+      },
       { path: "profile", element: <Profile />, errorElement: <ErrorPage /> },
     ],
   },

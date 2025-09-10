@@ -92,6 +92,7 @@ export async function editCollection(
     }
 
     const { name, description } = req.body;
+    console.log("name, description", name, description);
     const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined; // undefined, щоб не перезаписувати якщо нема
 
     if (!req.user) {

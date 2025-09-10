@@ -1,4 +1,4 @@
-import { getUserCollections } from "../../../services/collectionService";
+import api from "../../../api/api";
 import { Link, useLoaderData } from "react-router-dom";
 import Button from "../../../components/Button/Button";
 import CollectionCardList from "./components/CollectionCardList/CollectionCardList";
@@ -36,6 +36,6 @@ export default function MyCollectionsPage() {
 }
 
 export async function loader() {
-  const response = await getUserCollections();
-  return response;
+  const response = await api.get("/collections");
+  return response.data;
 }

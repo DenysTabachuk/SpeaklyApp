@@ -15,15 +15,6 @@ function generateTokens(payload: object) {
   return { accessToken, refreshToken };
 }
 
-function setRefreshCookie(res: Response, refreshToken: string) {
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 днів
-  });
-}
-
 export async function register(
   req: Request,
   res: Response,
@@ -67,6 +58,7 @@ export async function register(
 export async function login(req: Request, res: Response, next: NextFunction) {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
 
     if (!email || !password) {
       return res.status(400).json({ error: "Неправильні дані для входу" });
@@ -80,10 +72,9 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     const payload = { userId: user.id, email: user.email, name: user.name };
     const { accessToken, refreshToken } = generateTokens(payload);
 
-    setRefreshCookie(res, refreshToken);
-
     res.json({
-      token: accessToken,
+      accessToken,
+      refreshToken,
       user: payload,
     });
   } catch (error) {
@@ -92,13 +83,14 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 }
 
 export function refreshToken(req: Request, res: Response) {
-  const existingRefreshToken = req.cookies.refreshToken;
-  if (!existingRefreshToken) {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
     return res.status(401).json({ error: "Refresh token відсутній" });
   }
 
   try {
-    const decoded = jwt.verify(existingRefreshToken, JWT_REFRESH_SECRET) as {
+    const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET) as {
       userId: number;
       email: string;
       name: string;
@@ -109,11 +101,9 @@ export function refreshToken(req: Request, res: Response) {
       email: decoded.email,
       name: decoded.name,
     };
-    const { accessToken, refreshToken } = generateTokens(payload);
+    const { accessToken, refreshToken: newRefresh } = generateTokens(payload);
 
-    setRefreshCookie(res, refreshToken);
-
-    res.json({ token: accessToken });
+    res.json({ token: accessToken, refreshToken: newRefresh });
   } catch (error) {
     return res.status(403).json({ error: "Недійсний refresh token" });
   }

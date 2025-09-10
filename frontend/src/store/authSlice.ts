@@ -7,11 +7,13 @@ type UserPayload = {
   email: string;
 };
 
-const token = localStorage.getItem("token");
+const accessToken = localStorage.getItem("accessToken");
+const refreshToken = localStorage.getItem("refreshToken");
+
 let user = null;
-if (token) {
+if (accessToken) {
   try {
-    const decoded = jwtDecode<UserPayload>(token);
+    const decoded = jwtDecode<UserPayload>(accessToken);
     user = {
       id: decoded.userId,
       name: decoded.name,
@@ -24,7 +26,8 @@ if (token) {
 }
 
 const initialState = {
-  token,
+  accessToken,
+  refreshToken,
   user,
 };
 
@@ -33,14 +36,19 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login(state, action) {
-      state.token = action.payload.token;
+      console.log(action.payload);
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
       state.user = action.payload.user;
-      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("accessToken", action.payload.accessToken);
+      localStorage.setItem("refreshToken", action.payload.refreshToken);
     },
     logout(state) {
-      state.token = null;
+      state.accessToken = null;
+      state.refreshToken = null;
       state.user = null;
       localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
     },
   },
 });

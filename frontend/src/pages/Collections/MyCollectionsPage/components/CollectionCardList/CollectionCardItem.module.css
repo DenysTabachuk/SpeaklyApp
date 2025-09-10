@@ -1,77 +1,31 @@
-/* MyCollection.tsx */
-
-.myCollectionsPage h2 {
-  font-size: 40px;
-}
-
-.myCollectionsPage .description {
-  text-align: justify;
-  font-size: large;
-}
-
-/* CollectionContainer.tsx */
-
-.collectionContainer {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  margin-bottom: 40px;
-  padding: 0;
-}
-
-.collectionContainer a {
-  text-decoration: none;
-  color: white;
-}
-
-.collectionItem {
+.collectionCardItem {
   border: 2px solid var(--primary-color);
   background: linear-gradient(90deg, #5d17de, #6e54aa, #6d28dc);
   background-size: 200% 100%; /* для анімації руху градієнта */
   padding: 10px 15px;
-  min-width: 150px;
   border-radius: 10px;
   box-shadow: 5px 5px 10px var(--shadow-color);
   color: white;
   transition: background-position 0.5s ease, transform 0.3s ease;
-  width: 100%;
   height: 200px;
   display: flex;
   gap: 20px;
 }
 
-.collectionItem:hover {
+.collectionCardItem:hover {
   background-position: 100% 0; /* рухаємо градієнт */
   transform: scale(1.05); /* легке збільшення */
 }
 
-.collectionItem img {
+.collectionCardItem img {
   border-radius: 10px;
   max-width: 45%;
   object-fit: cover; /* зберігає пропорції, обрізає по краях */
 }
 
-.collectionDetails {
+.collectionContent {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 55%;
-}
-
-.collectionDetails button {
-  /* width: 150px; */
-  /* width: 60%; */
-}
-
-@media (min-width: 768px) {
-  .collectionItem {
-    width: 47%;
-  }
-}
-
-@media (min-width: 1200px) {
-  .collectionItem {
-    width: 30%;
-  }
 }

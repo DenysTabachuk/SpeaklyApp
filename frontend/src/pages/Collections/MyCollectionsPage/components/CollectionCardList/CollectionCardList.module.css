@@ -1,0 +1,17 @@
+.collectionCardList {
+  list-style: none;
+  margin-bottom: 40px;
+  padding: 0;
+
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+/* auto-fit заповнює ряд максимальною кількістю колонок, які влізуть.
+minmax(400px, 1fr) гарантує, що картки не будуть надто вузькі.
+Якщо залишився простір, картки рівномірно розтягуються → ідеальні 2, 3 або 4 колонки залежно від ширини контейнера. */
+
+.collectionCardList a {
+  text-decoration: none;
+  color: white;
+}

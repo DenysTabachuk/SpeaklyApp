@@ -8,22 +8,29 @@ export type Collection = {
   terms?: Term[];
 };
 
-export async function getUserCollections(token: string) {
+export async function getUserCollections() {
+  const token = localStorage.getItem("token");
   const response = await fetch("http://localhost:3000/collections", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  return response;
+  return response.json();
 }
 
-export async function getCollectionById(collectionID: string, token: string) {
-  return fetch(`http://localhost:3000/collections/${collectionID}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export async function getCollectionById(collectionID: string) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(
+    `http://localhost:3000/collections/${collectionID}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.json();
 }
 
 export async function addNewCollection(formData: FormData, token: string) {
@@ -61,7 +68,7 @@ export async function editCollection(
   return data;
 }
 
-export async function deleteCollection(collectionId: string, token: string) {
+export async function deleteCollection(collectionId: number, token: string) {
   return fetch(`http://localhost:3000/collections/${collectionId}`, {
     method: "DELETE",
     headers: {

@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET!;
 
 function generateTokens(payload: object) {
-  const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: "30m" });
+  const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: "2h" }); // поки буде так
   const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, {
     expiresIn: "7d",
   });

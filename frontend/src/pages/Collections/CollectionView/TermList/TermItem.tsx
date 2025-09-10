@@ -1,5 +1,5 @@
 import type { EditableTerm } from "./TermList";
-import styles from "./Lists.module.css";
+import styles from "./TermList.module.css";
 import editIcon from "../../../../assets/edit-icon.png";
 import deleteIcon from "../../../../assets/delete-icon.png";
 

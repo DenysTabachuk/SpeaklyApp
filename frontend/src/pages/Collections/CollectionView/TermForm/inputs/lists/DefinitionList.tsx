@@ -1,5 +1,7 @@
-import type { Definition } from "../../../../../services/collectionService";
+import type { Definition } from "../../../../../../services/termService";
 import styles from "../Inputs.module.css";
+import showMoreIcon from "../../../../../../assets/show-more-icon.png";
+import { useState } from "react";
 
 type DefinitionListProps = {
   definitionIndex: number;
@@ -14,24 +16,43 @@ export default function DefinitionList({
   definitionsList,
   definitionOnClick,
 }: DefinitionListProps) {
+  const [showMore, setShowMore] = useState(true);
+
   // Фільтруємо по підрядку (case-insensitive)
   const filteredDefinitions = definitionsList.filter((def) =>
     def.text.toLowerCase().includes(definitionText.toLowerCase())
   );
 
+  const handleShowMore = () => {
+    setShowMore(!showMore);
+  };
+
+  const handleClickItem = (defText: string) => {
+    definitionOnClick(definitionIndex, defText);
+    setShowMore(false); // сховати список після вибору
+  };
+
   return (
-    <ul className={styles.termList}>
-      {filteredDefinitions.map((def, idx) => (
-        <li
-          key={idx}
-          onMouseDown={() => definitionOnClick(definitionIndex, def.text)}
-        >
-          {/* mousedown → коли користувач натиснув кнопку миші (ще до відпускання)
-              mouseup → коли відпустив кнопку миші
-              click → відпрацьовує тільки після mousedown + mouseup */}
-          {def.text}
-        </li>
-      ))}
-    </ul>
+    <div>
+      {filteredDefinitions.length > 0 && (
+        <div className={styles.showMoreIconContainer} onClick={handleShowMore}>
+          <img
+            src={showMoreIcon}
+            className={`icon ${styles.showMoreIcon} ${
+              !showMore ? styles.closed : ""
+            }`}
+            alt=""
+          />
+        </div>
+      )}
+
+      <ul className={`${styles.termList} ${!showMore ? styles.closed : ""}`}>
+        {filteredDefinitions.map((def, idx) => (
+          <li key={idx} onMouseDown={() => handleClickItem(def.text)}>
+            {def.text}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

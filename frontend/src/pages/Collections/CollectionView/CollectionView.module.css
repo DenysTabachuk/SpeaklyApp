@@ -1,11 +1,15 @@
 .CollectionView {
-  min-height: 200px;
+  min-height: 300px;
+  min-width: 300px;
+  max-width: 900px;
+
   margin: auto;
   border: 1px solid black;
   border-radius: 15px;
   padding: 5px 40px 30px 40px;
   background: linear-gradient(120deg, #4d365d, #56118a, #823db3);
   box-shadow: 0 0 20px 10px #2f024f;
+  box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
@@ -20,12 +24,13 @@
 }
 
 .collectionImg {
-  max-width: 500px;
+  max-width: 100%;
 }
 
 .moreIcon {
   position: absolute;
   right: 40px;
+  top: 25px;
 }
 
 .icon {

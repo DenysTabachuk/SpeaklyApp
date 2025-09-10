@@ -43,13 +43,14 @@ export default function TermInput({ term, fetchDefinitions }: TermInputProps) {
         onChange={handleTermInputChange}
         value={newTerm}
         name="term"
+        autoComplete="off"
       />
-      {suggestions && !termIsEntered && (
-        <SuggestionList
-          termSuggestionList={suggestions}
-          termSuggestionOnClick={handleSuggestionSelect}
-        />
-      )}
+
+      <SuggestionList
+        termSuggestionList={suggestions || []}
+        termSuggestionOnClick={handleSuggestionSelect}
+        termIsEntered={termIsEntered}
+      />
     </div>
   );
 }

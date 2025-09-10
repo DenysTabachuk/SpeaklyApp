@@ -1,16 +1,19 @@
+/* TermList  */
+
 .TermAndDefinitionsList {
   padding: 0;
   margin: 0;
 }
 
+/* TermItem */
+
 .Term {
-  width: 700px;
-  padding: 10px;
+  /* padding: 10px; */
   margin: 10px 0;
   display: flex;
+
   gap: 20px;
   border-bottom: 1px solid white;
-  background-color: var(--primary-color);
   box-shadow: 0 5px 10px var(--shadow-color);
   border: 1px solid black;
   border-radius: 15px;
@@ -31,6 +34,9 @@
   border-right: 1px solid white;
   padding: 15px;
   min-width: 80px;
+  text-align: center;
+  background-color: rgb(17, 1, 41);
+  border-radius: 15px 0px 0px 15px;
 }
 
 .TermDefinitionsContainer {
@@ -55,4 +61,27 @@
   flex-direction: column;
   justify-content: center;
   gap: 10px;
+  padding: 15px;
+}
+
+/* Для малих екранів до 600px */
+@media (max-width: 600px) {
+  .Term {
+    flex-direction: column;
+    margin: 20px 0;
+  }
+
+  .TermWordContainer {
+    border: none;
+    border-radius: 15px 15px 0px 0px;
+  }
+
+  .TermDefinitionsContainer {
+    padding: 5px 30px 5px 30px;
+  }
+
+  .buttonContainer {
+    flex-direction: row;
+    justify-content: space-around;
+  }
 }

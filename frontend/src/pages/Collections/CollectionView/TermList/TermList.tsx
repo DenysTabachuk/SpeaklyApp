@@ -1,5 +1,5 @@
 import type { Term } from "../../../../services/termService";
-import styles from "./Lists.module.css";
+import styles from "./TermList.module.css";
 import TermItem from "./TermItem";
 import ConfirmModal from "../../../../components/Modal/ConfirmModal";
 import { deleteTerm } from "../../../../services/termService";

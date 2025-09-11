@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET!;
 
 function generateTokens(payload: object) {
-  const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: "2h" }); // поки буде так
+  const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: "2h" });
   const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, {
     expiresIn: "7d",
   });
@@ -58,7 +58,6 @@ export async function register(
 export async function login(req: Request, res: Response, next: NextFunction) {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
 
     if (!email || !password) {
       return res.status(400).json({ error: "Неправильні дані для входу" });

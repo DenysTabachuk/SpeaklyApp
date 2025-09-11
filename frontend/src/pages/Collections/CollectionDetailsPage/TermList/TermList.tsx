@@ -25,9 +25,6 @@ export default function TermList({ terms }: TermListProps) {
   const [showConfirmModal, setShowConfrimModal] = useState(false);
   const [deletingIndex, setDeletingIndex] = useState<number | null>(null);
 
-  console.log("TermAndDefinitionsList terms:", terms);
-  console.log("TermAndDefinitionsList editableTerms:", editableTerms);
-
   useEffect(() => {
     setEditableTerms(terms.map((t) => ({ ...t, isEditing: false })));
   }, [terms]);

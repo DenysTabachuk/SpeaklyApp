@@ -55,7 +55,8 @@ export default function TermForm({
     execute: fetchDefinitions,
   } = useHttp<Definition[], [string]>(getTermDefinitions);
 
-  const handleSumbit = (formData: FormData) => {
+  const handleSubmit = (formData: FormData) => {
+    console.log("handleSumbit");
     const word = formData.get("term") as string;
     const definitions = formData.getAll("definitions") as string[];
 
@@ -66,7 +67,7 @@ export default function TermForm({
       definitions: definitions.map((def) => ({ text: def })),
     };
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
 
     if (token) {
       if (existinngTerm) {
@@ -78,7 +79,7 @@ export default function TermForm({
   };
 
   return (
-    <form action={handleSumbit} className={styles.newTermForm}>
+    <form action={handleSubmit} className={styles.newTermForm}>
       <div className={styles.inputsContainer}>
         <TermInput
           term={existinngTerm?.word ?? ""}

@@ -1,7 +1,7 @@
 import Layout from "./Layout";
 import MyCollectionsPage from "./pages/Collections/MyCollectionsPage/MyCollectionsPage";
 import AddNewCollection from "./pages/Collections/AddEditCollection/AddCollection";
-import CollectionView from "./pages/Collections/CollectionView/CollectionView";
+import CollectionDetails from "./pages/Collections/CollectionDetailsPage/CollectionDetailsPage";
 import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
 import Profile from "./pages/Profile/Profile";
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <CollectionView />,
+                element: <CollectionDetails />,
                 loader: collectionDetailsLoader,
               },
               {

@@ -77,6 +77,7 @@ export default function DefinitionInputs({
               onBlur={() => setInputFocus(index, false)}
               value={definition.text}
               name="definitions"
+              autoComplete="off"
             />
 
             <button

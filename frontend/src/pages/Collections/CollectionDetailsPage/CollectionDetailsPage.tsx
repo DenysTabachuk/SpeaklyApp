@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "../../../components/Button/Button";
 import TermForm from "./TermForm/TermForm";
 import TermList from "./TermList/TermList";
-import styles from "./CollectionView.module.css";
+import styles from "./CollectionDetailsPage.module.css";
 import moreIcon from "../../../assets/more-icon.png";
 import DropDownMenu from "./DropDownMenu/DropDownMenu";
 import ConfirmModal from "../../../components/Modal/ConfirmModal";
@@ -13,7 +13,7 @@ import {
 } from "../../../services/collectionService";
 import { useNavigate, useLoaderData } from "react-router-dom";
 
-export default function CollectionView() {
+export default function CollectionDetailsPage() {
   // 1️ Отримуємо дані з loader
   const initialCollection: Collection = useLoaderData();
 

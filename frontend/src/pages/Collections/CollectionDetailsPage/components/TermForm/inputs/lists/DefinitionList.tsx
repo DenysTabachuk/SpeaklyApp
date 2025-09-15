@@ -1,6 +1,6 @@
-import type { Definition } from "../../../../../../services/termService";
+import type { Definition } from "../../../../../../../types/definition";
 import styles from "../Inputs.module.css";
-import showMoreIcon from "../../../../../../assets/show-more-icon.png";
+import showMoreIcon from "../../../../../../../assets/show-more-icon.png";
 import { useState } from "react";
 
 type DefinitionListProps = {

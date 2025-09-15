@@ -1,12 +1,12 @@
-import type { Term } from "../../../../types/term";
+import type { Term } from "../../../../../types/term";
 import styles from "./TermList.module.css";
 import TermItem from "./TermItem";
-import ConfirmModal from "../../../../components/Modal/ConfirmModal";
+import ConfirmModal from "../../../../../components/Modal/ConfirmModal";
 import { useState, useEffect } from "react";
 import TermForm from "../TermForm/TermForm";
-
-import useDeleteTermMutation from "../mutations/useDeleteTermMutation";
-import useEditTermMutation from "../mutations/useEditTermMutation";
+import useDeleteTermMutation from "../../mutations/useDeleteTermMutation";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 type TermListProps = {
   terms: Term[];
@@ -16,7 +16,6 @@ export type EditableTerm = Term & { isEditing: boolean };
 
 export default function TermList({ terms }: TermListProps) {
   const deleteMutation = useDeleteTermMutation();
-  const editMutation = useEditTermMutation();
 
   const [editableTerms, setEditableTerms] = useState<EditableTerm[]>(
     terms.map((t) => ({ ...t, isEditing: false }))
@@ -38,11 +37,6 @@ export default function TermList({ terms }: TermListProps) {
     setEditableTerms(termsCopy);
   };
 
-  const onSubmitEditSuccess = (editedTerm: Term) => {
-    const term = { ...editedTerm, isEditing: false };
-    editMutation.mutate(term);
-  };
-
   const handleTermDelete = () => {
     if (deletingIndex === null) return;
     const termToDelete = editableTerms[deletingIndex];
@@ -61,8 +55,22 @@ export default function TermList({ terms }: TermListProps) {
     setShowConfrimModal(false);
   };
 
+  const listVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.4,
+      },
+    },
+  };
+
   return (
-    <ul className={styles.TermAndDefinitionsList}>
+    <motion.ul
+      variants={listVariants}
+      initial="hidden" // спочатку всі діти приховані
+      animate="visible" // анімація до стану "visible"
+      className={styles.TermAndDefinitionsList}
+    >
       {showConfirmModal && (
         <ConfirmModal onConfirm={handleTermDelete} onCancel={hideModal}>
           <h2>Попередження</h2>
@@ -74,22 +82,24 @@ export default function TermList({ terms }: TermListProps) {
         </ConfirmModal>
       )}
 
-      {editableTerms.map((term, index) =>
-        term.isEditing ? (
-          <TermForm
-            term={term}
-            onSubmitSuccess={(editedTerm) => onSubmitEditSuccess(editedTerm)}
-            onCancel={() => {}}
-          />
-        ) : (
-          <TermItem
-            term={term}
-            index={index}
-            onEdit={toggleTermEditing}
-            onDelete={() => showModal(index)}
-          ></TermItem>
-        )
-      )}
-    </ul>
+      <AnimatePresence>
+        {editableTerms.map((term, index) =>
+          term.isEditing ? (
+            <TermForm
+              term={term}
+              stopAddingTerm={() => toggleTermEditing(index)}
+            />
+          ) : (
+            <TermItem
+              term={term}
+              index={index}
+              key={`t${term.id}`}
+              onEdit={toggleTermEditing}
+              onDelete={() => showModal(index)}
+            ></TermItem>
+          )
+        )}
+      </AnimatePresence>
+    </motion.ul>
   );
 }

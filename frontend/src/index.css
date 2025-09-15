@@ -16,6 +16,7 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+  background: var(--background-gradient);
 }
 
 #root {
@@ -37,6 +38,8 @@ main {
   align-items: center;
   background: var(--background-gradient);
   padding: 40px;
+  min-width: 320px;
+  box-sizing: border-box;
 }
 
 @media (max-width: 600px) {

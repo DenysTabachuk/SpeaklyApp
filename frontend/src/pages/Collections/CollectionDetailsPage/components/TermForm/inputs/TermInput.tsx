@@ -1,8 +1,8 @@
-import type { Suggestion } from "../../../../../types/suggestion";
+import type { Suggestion } from "../../../../../../types/suggestion";
 import SuggestionList from "./lists/SuggestionList";
-import Input from "../../../../../components/Inputs/Input";
+import Input from "../../../../../../components/Inputs/Input";
 import { useState } from "react";
-import api from "../../../../../api/api";
+import api from "../../../../../../api/api";
 
 type TermInputProps = {
   term: string;

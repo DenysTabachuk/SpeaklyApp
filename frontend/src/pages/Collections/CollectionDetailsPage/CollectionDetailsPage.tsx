@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Button from "../../../components/Button/Button";
-import TermForm from "./TermForm/TermForm";
-import TermList from "./TermList/TermList";
+import TermForm from "./components/TermForm/TermForm";
+import TermList from "./components/TermList/TermList";
 import styles from "./CollectionDetailsPage.module.css";
 import moreIcon from "../../../assets/more-icon.png";
-import DropDownMenu from "./DropDownMenu/DropDownMenu";
+import DropDownMenu from "./components/DropDownMenu/DropDownMenu";
 import ConfirmModal from "../../../components/Modal/ConfirmModal";
 import { type Collection } from "../../../types/collection";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ import api from "../../../api/api";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Loading from "../../../components/Loading/Loading";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function CollectionDetailsPage() {
   const { id: collectionId } = useParams();
@@ -46,7 +47,7 @@ export default function CollectionDetailsPage() {
   }
 
   return (
-    <div className={styles.CollectionDetailsPage}>
+    <div className={styles.collectionDetailsPage}>
       {showDeleteCollectionModal && (
         <ConfirmModal
           onConfirm={handleCollectionDelete}
@@ -73,21 +74,24 @@ export default function CollectionDetailsPage() {
           <DropDownMenu handleDelete={showDeleteModal}></DropDownMenu>
         )}
 
-        <div className={styles.collectionContainer}>
-          <img
-            className={styles.collectionImg}
-            src={"http://localhost:3000" + collection!.imagePath}
-            alt=""
-          />
+        <div className={styles.imgContainer}>
+          <img src={"http://localhost:3000" + collection!.imagePath} alt="" />
         </div>
 
-        <p>{collection!.description}</p>
+        <p className={styles.description}>{collection!.description}</p>
 
         <TermList terms={collection!.terms || []}></TermList>
 
-        {addingNewTerm ? (
-          <TermForm stopAddingTerm={() => setAddingNewTerm(false)} />
-        ) : (
+        <AnimatePresence>
+          {addingNewTerm && (
+            <TermForm
+              key="termForm"
+              stopAddingTerm={() => setAddingNewTerm(false)}
+            />
+          )}
+        </AnimatePresence>
+
+        {!addingNewTerm && (
           <Button type="button" glowing onClick={() => setAddingNewTerm(true)}>
             +Новий термін
           </Button>

@@ -10,27 +10,25 @@ export default function MyCollectionsPage() {
 
   return (
     <div className={styles.myCollectionsPage}>
-      <div>
-        <h2>Мої колекції</h2>
-        <p className={styles.description}>
-          Тут ви можете зручно розподілити терміни, які бажаєте запам'тати між
-          колекціями(об'єднаннями термінів). Може групувати терміни за книжкою,
-          яку читаєте, за улюбленою відеогрою чи як вам заманеться!
-        </p>
+      <h2>Мої колекції</h2>
+      <p className={styles.description}>
+        Тут ви можете зручно розподілити терміни, які бажаєте запам'тати між
+        колекціями(об'єднаннями термінів). Може групувати терміни за книжкою,
+        яку читаєте, за улюбленою відеогрою чи як вам заманеться!
+      </p>
 
-        <CollectionCardList>
-          {collections.map((collections) => (
-            <CollectionCardList.Item
-              key={collections.id}
-              collection={collections}
-            />
-          ))}
-        </CollectionCardList>
+      <CollectionCardList>
+        {collections.map((collections) => (
+          <CollectionCardList.Item
+            key={collections.id}
+            collection={collections}
+          />
+        ))}
+      </CollectionCardList>
 
-        <Link to="new">
-          <Button glowing>+ Нова колекція</Button>
-        </Link>
-      </div>
+      <Link to="new">
+        <Button glowing>+ Нова колекція</Button>
+      </Link>
     </div>
   );
 }

@@ -1,14 +1,15 @@
-import Button from "../../../../components/Button/Button";
+import Button from "../../../../../components/Button/Button";
 import TermInput from "./inputs/TermInput";
 import DefinitionInputs from "./inputs/DefinitionInputs";
-import { getTermDefinitions } from "../../../../services/termService";
-import type { Definition } from "../../../../types/definition";
-import type { Term } from "../../../../types/term";
+import { getTermDefinitions } from "../../../../../services/termService";
+import type { Definition } from "../../../../../types/definition";
+import type { Term } from "../../../../../types/term";
 import styles from "./TermForms.module.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useAddTermMutation from "../mutations/useAddTermMutation";
-import useEditTermMutation from "../mutations/useEditTermMutation";
+import useAddTermMutation from "../../mutations/useAddTermMutation";
+import useEditTermMutation from "../../mutations/useEditTermMutation";
+import { motion } from "framer-motion";
 
 type NewTermFormParams = {
   term?: Term;
@@ -19,7 +20,6 @@ export default function TermForm({
   term: existinngTerm,
   stopAddingTerm,
 }: NewTermFormParams) {
-  const [term, setTerm] = useState<Term | undefined>(existinngTerm);
   const [definitions, setDefinitions] = useState<Definition[]>();
   const { id: collectionId } = useParams();
 
@@ -28,8 +28,8 @@ export default function TermForm({
 
   // треба щоб при редагуванні
   useEffect(() => {
-    if (term) {
-      fetchDefinitions(term.word);
+    if (existinngTerm) {
+      fetchDefinitions(existinngTerm.word);
     }
   }, []);
 
@@ -43,7 +43,7 @@ export default function TermForm({
     const definitions = formData.getAll("definitions") as string[];
 
     const newTerm: Term = {
-      id: term?.id,
+      id: existinngTerm?.id,
       collectionId: Number(collectionId),
       word,
       definitions: definitions.map((def) => ({ text: def })),
@@ -59,7 +59,23 @@ export default function TermForm({
   };
 
   return (
-    <form action={handleSubmit} className={styles.newTermForm}>
+    <motion.form
+      className={styles.form}
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{
+        opacity: [1, 0],
+        height: ["auto", 0],
+        transition: {
+          opacity: { duration: 0.3, ease: "easeOut" },
+          height: { duration: 0.3, ease: "linear", delay: 0.3 },
+        },
+      }}
+      transition={{
+        opacity: { duration: 0.3, ease: "easeOut" },
+        height: { duration: 0.3, ease: "linear" },
+      }}
+    >
       <div className={styles.inputsContainer}>
         <TermInput
           term={existinngTerm?.word ?? ""}
@@ -76,10 +92,10 @@ export default function TermForm({
         <Button glowing accept>
           Зберегти
         </Button>
-        <Button glowing decline onClick={stopAddingTerm}>
+        <Button glowing decline onClick={stopAddingTerm} type="button">
           Відмінити
         </Button>
       </div>
-    </form>
+    </motion.form>
   );
 }

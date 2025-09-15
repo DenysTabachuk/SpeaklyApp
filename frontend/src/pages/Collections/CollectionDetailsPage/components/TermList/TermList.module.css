@@ -18,10 +18,13 @@
   border: 1px solid black;
   border-radius: 15px;
 
-  background-color: var(--primary-color);
+  background: linear-gradient(90deg, #140234, var(--primary-color), #6d28dc);
+  /* background-color: var(--primary-color); */
   background-size: 200% 100%;
   background-position: 0% 0%;
   transition: 0.5s ease;
+
+  overflow: "hidden";
 }
 
 .Term:hover {

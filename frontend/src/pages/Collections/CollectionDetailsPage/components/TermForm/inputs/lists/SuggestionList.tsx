@@ -1,6 +1,6 @@
-import type { Suggestion } from "../../../../../../services/termService";
+import type { Suggestion } from "../../../../../../../types/suggestion";
 import styles from "../Inputs.module.css";
-import showMoreIcon from "../../../../../../assets/show-more-icon.png";
+import showMoreIcon from "../../../../../../../assets/show-more-icon.png";
 import { useState, useRef, useEffect } from "react";
 
 type TermSuggestionContainerParams = {

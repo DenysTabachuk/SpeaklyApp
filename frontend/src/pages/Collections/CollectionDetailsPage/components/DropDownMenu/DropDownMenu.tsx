@@ -1,6 +1,6 @@
 import styles from "./DropDownMenu.module.css";
-import editIcon from "../../../../assets/edit-icon.png";
-import deleteIcon from "../../../../assets/delete-icon.png";
+import editIcon from "../../../../../assets/edit-icon.png";
+import deleteIcon from "../../../../../assets/delete-icon.png";
 import { Link } from "react-router-dom";
 
 type DropDownMenu = {

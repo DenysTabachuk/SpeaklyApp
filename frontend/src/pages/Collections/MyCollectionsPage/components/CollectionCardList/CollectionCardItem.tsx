@@ -1,4 +1,4 @@
-import type { Collection } from "../../../../../services/collectionService";
+import type { Collection } from "../../../../../types/collection";
 import defaultImage from "../../../../../assets/default-image.png";
 import { Link } from "react-router-dom";
 import Button from "../../../../../components/Button/Button";
@@ -11,14 +11,16 @@ type CollectionCardItemProps = {
 function CollectionCardItem({ collection }: CollectionCardItemProps) {
   return (
     <li className={styles.collectionCardItem}>
-      <img
-        src={
-          collection.imagePath
-            ? "http://localhost:3000" + collection.imagePath
-            : defaultImage
-        }
-        alt=""
-      />
+      <div className={styles.imgContainer}>
+        <img
+          src={
+            collection.imagePath
+              ? "http://localhost:3000" + collection.imagePath
+              : defaultImage
+          }
+          alt=""
+        />
+      </div>
 
       <Link to={String(collection.id)} className={styles.collectionContent}>
         <div>

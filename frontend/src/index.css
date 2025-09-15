@@ -33,8 +33,16 @@ main {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+
+  align-items: center;
   background: var(--background-gradient);
   padding: 40px;
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 10px;
+  }
 }
 
 .errors {

@@ -7,9 +7,12 @@
   box-shadow: 5px 5px 10px var(--shadow-color);
   color: white;
   transition: background-position 0.5s ease, transform 0.3s ease;
-  height: 200px;
+  max-height: 200px;
+
   display: flex;
   gap: 20px;
+  justify-content: space-between;
+  /* flex-wrap: wrap; */
 }
 
 .collectionCardItem:hover {
@@ -17,10 +20,16 @@
   transform: scale(1.05); /* легке збільшення */
 }
 
+.imgContainer {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  width: 50%;
+  /* object-fit: cover; зберігає пропорції, обрізає по краях */
+}
+
 .collectionCardItem img {
   border-radius: 10px;
-  max-width: 45%;
-  object-fit: cover; /* зберігає пропорції, обрізає по краях */
 }
 
 .collectionContent {
@@ -28,4 +37,11 @@
   flex-direction: column;
   justify-content: space-between;
   width: 55%;
+}
+
+.collectionContent p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* скільки рядків показати */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

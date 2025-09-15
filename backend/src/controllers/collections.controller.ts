@@ -40,6 +40,8 @@ export async function getUserCollections(
   next: NextFunction
 ) {
   try {
+    new Promise((resolve) => setTimeout(resolve, 5000)); // симулюю затримку
+
     const collections = await prisma.collection.findMany({
       where: { userId: req.user!.userId },
       orderBy: { id: "desc" },

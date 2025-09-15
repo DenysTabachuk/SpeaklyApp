@@ -3,7 +3,7 @@ import { Link, useLoaderData } from "react-router-dom";
 import Button from "../../../components/Button/Button";
 import CollectionCardList from "./components/CollectionCardList/CollectionCardList";
 import styles from "./MyCollectionsPage.module.css";
-import type { Collection } from "../../../services/collectionService";
+import type { Collection } from "../../../types/collection";
 
 export default function MyCollectionsPage() {
   const collections: Collection[] = useLoaderData();

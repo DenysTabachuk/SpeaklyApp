@@ -8,14 +8,7 @@ export async function addNewTerm(
   next: NextFunction
 ) {
   try {
-    const { collectionId } = req.params;
-    const {
-      word,
-      definitions,
-    }: {
-      word: string;
-      definitions?: string[] | { text: string }[];
-    } = req.body;
+    const { word, definitions, collectionId } = req.body;
 
     if (!word || typeof word !== "string") {
       return res.status(400).json({ error: "Поле 'word' є обов'язковим" });

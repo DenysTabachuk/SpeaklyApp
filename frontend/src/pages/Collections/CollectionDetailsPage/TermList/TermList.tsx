@@ -1,12 +1,12 @@
-import type { Term } from "../../../../services/termService";
+import type { Term } from "../../../../types/term";
 import styles from "./TermList.module.css";
 import TermItem from "./TermItem";
 import ConfirmModal from "../../../../components/Modal/ConfirmModal";
-import { deleteTerm } from "../../../../services/termService";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useHttp } from "../../../../hooks/useHttp";
 import TermForm from "../TermForm/TermForm";
+
+import useDeleteTermMutation from "../mutations/useDeleteTermMutation";
+import useEditTermMutation from "../mutations/useEditTermMutation";
 
 type TermListProps = {
   terms: Term[];
@@ -14,29 +14,22 @@ type TermListProps = {
 
 export type EditableTerm = Term & { isEditing: boolean };
 
-// Обробку помилок додати
 export default function TermList({ terms }: TermListProps) {
-  const { id: collectionId } = useParams<{ id: string }>();
+  const deleteMutation = useDeleteTermMutation();
+  const editMutation = useEditTermMutation();
 
   const [editableTerms, setEditableTerms] = useState<EditableTerm[]>(
     terms.map((t) => ({ ...t, isEditing: false }))
   );
 
-  const [showConfirmModal, setShowConfrimModal] = useState(false);
-  const [deletingIndex, setDeletingIndex] = useState<number | null>(null);
-
   useEffect(() => {
     setEditableTerms(terms.map((t) => ({ ...t, isEditing: false })));
   }, [terms]);
 
-  const {
-    data,
-    isLoading,
-    error,
-    execute: executeDeleteTerm,
-  } = useHttp(deleteTerm);
+  const [showConfirmModal, setShowConfrimModal] = useState(false);
+  const [deletingIndex, setDeletingIndex] = useState<number | null>(null);
 
-  const handleTermEdit = (index: number) => {
+  const toggleTermEditing = (index: number) => {
     const term = editableTerms[index];
     const termsCopy = [...editableTerms];
 
@@ -45,21 +38,18 @@ export default function TermList({ terms }: TermListProps) {
     setEditableTerms(termsCopy);
   };
 
+  const onSubmitEditSuccess = (editedTerm: Term) => {
+    const term = { ...editedTerm, isEditing: false };
+    editMutation.mutate(term);
+  };
+
   const handleTermDelete = () => {
     if (deletingIndex === null) return;
+    const termToDelete = editableTerms[deletingIndex];
 
-    const newEditableTerms = editableTerms.filter(
-      (_, i) => i !== deletingIndex
-    );
-    setEditableTerms(newEditableTerms);
+    deleteMutation.mutate(termToDelete);
     setShowConfrimModal(false);
     setDeletingIndex(null);
-
-    // звернення на бек
-    const token = localStorage.getItem("token");
-    if (token) {
-      executeDeleteTerm(collectionId!, editableTerms[deletingIndex].id!, token);
-    }
   };
 
   const showModal = (index: number) => {
@@ -69,14 +59,6 @@ export default function TermList({ terms }: TermListProps) {
 
   const hideModal = () => {
     setShowConfrimModal(false);
-  };
-
-  const onSubmitSuccess = (editedTerm: Term, index: number) => {
-    const termsCopy = [...editableTerms];
-    const term = { ...editedTerm, isEditing: false };
-
-    termsCopy[index] = term;
-    setEditableTerms(termsCopy);
   };
 
   return (
@@ -96,14 +78,14 @@ export default function TermList({ terms }: TermListProps) {
         term.isEditing ? (
           <TermForm
             term={term}
-            onSubmitSuccess={(editedTerm) => onSubmitSuccess(editedTerm, index)}
+            onSubmitSuccess={(editedTerm) => onSubmitEditSuccess(editedTerm)}
             onCancel={() => {}}
           />
         ) : (
           <TermItem
             term={term}
             index={index}
-            onEdit={handleTermEdit}
+            onEdit={toggleTermEditing}
             onDelete={() => showModal(index)}
           ></TermItem>
         )

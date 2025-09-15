@@ -1,81 +1,61 @@
 import Button from "../../../../components/Button/Button";
 import TermInput from "./inputs/TermInput";
 import DefinitionInputs from "./inputs/DefinitionInputs";
-import { useHttp } from "../../../../hooks/useHttp";
-import {
-  addNewTerm,
-  editTerm,
-  getTermDefinitions,
-} from "../../../../services/termService";
-import type { Definition, Term } from "../../../../services/termService";
+import { getTermDefinitions } from "../../../../services/termService";
+import type { Definition } from "../../../../types/definition";
+import type { Term } from "../../../../types/term";
 import styles from "./TermForms.module.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useAddTermMutation from "../mutations/useAddTermMutation";
+import useEditTermMutation from "../mutations/useEditTermMutation";
 
 type NewTermFormParams = {
   term?: Term;
-  onSubmitSuccess: (term: Term) => void;
-  onCancel: () => void;
+  stopAddingTerm: () => void;
 };
 
 export default function TermForm({
   term: existinngTerm,
-  onSubmitSuccess,
-  onCancel,
+  stopAddingTerm,
 }: NewTermFormParams) {
-  const { id: collectionId } = useParams<{ id: string }>();
   const [term, setTerm] = useState<Term | undefined>(existinngTerm);
+  const [definitions, setDefinitions] = useState<Definition[]>();
+  const { id: collectionId } = useParams();
 
-  const {
-    data: createdTerm,
-    error: addNewTermError,
-    execute: executeAddTerm,
-  } = useHttp<Term, [string, string, Term]>(addNewTerm);
+  const addTermMutation = useAddTermMutation();
+  const editTermMutation = useEditTermMutation();
 
-  const {
-    data: editedTerm,
-    error: editedTermError,
-    execute: executeEditTerm,
-  } = useHttp<Term, [Term, string]>(editTerm);
-
+  // треба щоб при редагуванні
   useEffect(() => {
-    if (createdTerm) {
-      onSubmitSuccess(createdTerm);
+    if (term) {
+      fetchDefinitions(term.word);
     }
+  }, []);
 
-    if (editedTerm) {
-      onSubmitSuccess(editedTerm);
-    }
-  }, [createdTerm, editedTerm]);
+  const fetchDefinitions = async (selectedTerm: string) => {
+    const definition = await getTermDefinitions(selectedTerm);
+    setDefinitions(definition);
+  };
 
-  const {
-    data: definitions,
-    isLoading: isLoadingDefinitions,
-    error: errorDefinitions,
-    execute: fetchDefinitions,
-  } = useHttp<Definition[], [string]>(getTermDefinitions);
-
-  const handleSubmit = (formData: FormData) => {
-    console.log("handleSumbit");
+  const handleSubmit = async (formData: FormData) => {
     const word = formData.get("term") as string;
     const definitions = formData.getAll("definitions") as string[];
 
     const newTerm: Term = {
       id: term?.id,
-      collectionId: term?.collectionId,
+      collectionId: Number(collectionId),
       word,
       definitions: definitions.map((def) => ({ text: def })),
     };
 
-    const token = localStorage.getItem("accessToken");
-
-    if (token) {
-      if (existinngTerm) {
-        executeEditTerm(newTerm, token);
-      } else {
-        executeAddTerm(collectionId!, token, newTerm);
-      }
+    if (existinngTerm) {
+      editTermMutation.mutate(newTerm);
+    } else {
+      addTermMutation.mutate(newTerm);
     }
+
+    stopAddingTerm();
   };
 
   return (
@@ -96,7 +76,7 @@ export default function TermForm({
         <Button glowing accept>
           Зберегти
         </Button>
-        <Button glowing decline onClick={onCancel}>
+        <Button glowing decline onClick={stopAddingTerm}>
           Відмінити
         </Button>
       </div>

@@ -1,4 +1,4 @@
-import type { Collection } from "../../../services/collectionService";
+import type { Collection } from "../../../types/collection";
 import CollectionForm from "./CollectionForm/CollectionForm";
 import { useLoaderData, redirect } from "react-router-dom";
 import type { LoaderFunctionArgs } from "react-router-dom";

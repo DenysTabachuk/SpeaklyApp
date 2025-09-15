@@ -1,9 +1,8 @@
-import type { Suggestion } from "../../../../../services/termService";
-import { getTermSuggestion } from "../../../../../services/termService";
+import type { Suggestion } from "../../../../../types/suggestion";
 import SuggestionList from "./lists/SuggestionList";
 import Input from "../../../../../components/Inputs/Input";
 import { useState } from "react";
-import { useHttp } from "../../../../../hooks/useHttp";
+import api from "../../../../../api/api";
 
 type TermInputProps = {
   term: string;
@@ -13,21 +12,18 @@ type TermInputProps = {
 export default function TermInput({ term, fetchDefinitions }: TermInputProps) {
   const [newTerm, setNewTerm] = useState(term || "");
   const [termIsEntered, setTermIsEntered] = useState(false);
+  const [suggestions, setSuggestion] = useState<Suggestion[] | null>(null);
 
-  const {
-    data: suggestions,
-    isLoading: isLoadingSuggestions,
-    error: errorSuggestion,
-    execute: fetchSuggestions,
-  } = useHttp<Suggestion[], [string]>(getTermSuggestion);
-
-  const handleTermInputChange = (
+  const handleTermInputChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const term = event.target.value;
     setNewTerm(term);
     setTermIsEntered(false);
-    fetchSuggestions(term);
+    const suggestions = await api.get<Suggestion[]>(
+      `https://api.datamuse.com/sug?s=${term}`
+    );
+    setSuggestion(suggestions.data);
   };
 
   const handleSuggestionSelect = (selectedTerm: string) => {

@@ -6,19 +6,24 @@ import styles from "./CollectionDetailsPage.module.css";
 import moreIcon from "../../../assets/more-icon.png";
 import DropDownMenu from "./DropDownMenu/DropDownMenu";
 import ConfirmModal from "../../../components/Modal/ConfirmModal";
-import type { Term } from "../../../services/termService";
-import {
-  deleteCollection,
-  type Collection,
-} from "../../../services/collectionService";
-import { useNavigate, useLoaderData } from "react-router-dom";
+import { type Collection } from "../../../types/collection";
+import { useNavigate } from "react-router-dom";
+import api from "../../../api/api";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
+import Loading from "../../../components/Loading/Loading";
 
 export default function CollectionDetailsPage() {
-  // 1️ Отримуємо дані з loader
-  const initialCollection: Collection = useLoaderData();
+  const { id: collectionId } = useParams();
 
-  // 2️ Зберігаємо у локальному state
-  const [collection, setCollection] = useState<Collection>(initialCollection);
+  const { data: collection, isLoading } = useQuery<Collection>({
+    queryKey: ["collection-detail", Number(collectionId)],
+    queryFn: async () => {
+      const res = await api.get(`/collections/${collectionId}`);
+      return res.data;
+    },
+    enabled: !!collectionId, //  запит виконується тільки якщо collectionId !== undefined
+  });
 
   const navigate = useNavigate();
 
@@ -30,32 +35,18 @@ export default function CollectionDetailsPage() {
   const showDeleteModal = () => setShowDeleteCollectionModal(true);
   const hideDeleteModal = () => setShowDeleteCollectionModal(false);
 
-  const afterTermAdded = (term: Term) => {
-    setCollection((prev) => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        terms: [...(prev.terms ?? []), { ...term }], // копія терміну
-      };
-    });
-    setAddingNewTerm(false);
-  };
-
   const handleCollectionDelete = async () => {
-    const token = localStorage.getItem("token");
-    if (!collection.id || !token) return;
-
-    try {
-      await deleteCollection(collection.id, token);
-      navigate("/collections");
-    } catch (err) {
-      console.error(err);
-    }
+    await api.delete(`collections/${collection!.id}`);
     setShowDeleteCollectionModal(false);
+    navigate("/collections");
   };
+
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
 
   return (
-    <div className={styles.CollectionView}>
+    <div className={styles.CollectionDetailsPage}>
       {showDeleteCollectionModal && (
         <ConfirmModal
           onConfirm={handleCollectionDelete}
@@ -63,7 +54,7 @@ export default function CollectionDetailsPage() {
         >
           <h2>Попередження</h2>
           <p>
-            Ви впевнені, що хочете видалити колекцію <b>{collection.name}</b>?
+            Ви впевнені, що хочете видалити колекцію <b>{collection!.name}</b>?
             Цю дію не можна буде скасувати!
           </p>
         </ConfirmModal>
@@ -76,7 +67,7 @@ export default function CollectionDetailsPage() {
           alt=""
           onClick={() => setShowDropDownMenu(!showDropDownMenu)}
         />
-        <h2>{collection.name}</h2>
+        <h2>{collection!.name}</h2>
 
         {showDropDownMenu && (
           <DropDownMenu handleDelete={showDeleteModal}></DropDownMenu>
@@ -85,26 +76,23 @@ export default function CollectionDetailsPage() {
         <div className={styles.collectionContainer}>
           <img
             className={styles.collectionImg}
-            src={"http://localhost:3000" + collection.imagePath}
+            src={"http://localhost:3000" + collection!.imagePath}
             alt=""
           />
         </div>
 
-        <p>{collection.description}</p>
+        <p>{collection!.description}</p>
 
-        <TermList terms={collection.terms || []}></TermList>
+        <TermList terms={collection!.terms || []}></TermList>
+
+        {addingNewTerm ? (
+          <TermForm stopAddingTerm={() => setAddingNewTerm(false)} />
+        ) : (
+          <Button type="button" glowing onClick={() => setAddingNewTerm(true)}>
+            +Новий термін
+          </Button>
+        )}
       </div>
-
-      {addingNewTerm ? (
-        <TermForm
-          onSubmitSuccess={afterTermAdded}
-          onCancel={() => setAddingNewTerm(false)}
-        />
-      ) : (
-        <Button type="button" glowing onClick={() => setAddingNewTerm(true)}>
-          +Новий термін
-        </Button>
-      )}
     </div>
   );
 }

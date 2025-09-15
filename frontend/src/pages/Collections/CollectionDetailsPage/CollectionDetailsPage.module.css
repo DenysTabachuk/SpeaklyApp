@@ -1,12 +1,9 @@
-.CollectionView {
+.CollectionDetailsPage {
   min-height: 300px;
-  min-width: 300px;
-  max-width: 900px;
-
-  margin: auto;
+  width: 60%;
   border: 1px solid black;
   border-radius: 15px;
-  padding: 5px 40px 30px 40px;
+  padding: 5px 20px 30px 20px;
   background: linear-gradient(120deg, #4d365d, #56118a, #823db3);
   box-shadow: 0 0 20px 10px #2f024f;
   box-sizing: border-box;
@@ -16,6 +13,12 @@
   justify-content: space-between;
 
   position: relative;
+}
+
+@media (max-width: 600px) {
+  .CollectionDetailsPage {
+    width: 100%;
+  }
 }
 
 .collectionContainer {

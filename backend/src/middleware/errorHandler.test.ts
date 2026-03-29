@@ -12,14 +12,21 @@ function createResponse() {
 }
 
 describe("errorHandler", () => {
+  let stdoutSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    stdoutSpy = jest.spyOn(process.stdout, "write").mockImplementation(() => true);
+  });
+
+  afterEach(() => {
+    stdoutSpy.mockRestore();
+  });
+
   it("returns 500 for unexpected errors", () => {
     const err = new Error("boom");
     const req = {} as Request;
     const res = createResponse();
     const next = jest.fn() as NextFunction;
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => undefined);
 
     errorHandler(err, req, res, next);
 
@@ -27,7 +34,5 @@ describe("errorHandler", () => {
     expect((res.status as jest.Mock).mock.results[0].value.json).toHaveBeenCalledWith({
       error: "Internal server error",
     });
-
-    consoleErrorSpy.mockRestore();
   });
 });

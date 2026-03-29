@@ -4,6 +4,7 @@ import { promisify } from "util";
 import path from "path";
 import app from "./app";
 import { env } from "./config/env";
+import { logger } from "./logger";
 
 const execFileAsync = promisify(execFile);
 const PORT = env.port;
@@ -33,11 +34,14 @@ async function startServer() {
   await runMigrations();
 
   app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+    logger.info("Server started", {
+      port: PORT,
+      url: `http://localhost:${PORT}`,
+    });
   });
 }
 
 startServer().catch((error) => {
-  console.error("Failed to start server", error);
+  logger.error("Failed to start server", { error });
   process.exit(1);
 });

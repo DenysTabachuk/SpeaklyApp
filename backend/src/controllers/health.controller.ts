@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/db";
+import { logger } from "../logger";
 
 export async function getHealth(req: Request, res: Response) {
   try {
@@ -10,7 +11,7 @@ export async function getHealth(req: Request, res: Response) {
       database: "up",
     });
   } catch (error) {
-    console.error("Health check failed", error);
+    logger.error("Health check failed", { error });
 
     res.status(503).json({
       status: "unavailable",

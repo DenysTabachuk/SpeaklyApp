@@ -8,7 +8,7 @@ jest.mock("../config/db", () => ({
 }));
 
 describe("getHealth", () => {
-  let consoleErrorSpy: jest.SpyInstance;
+  let stdoutSpy: jest.SpyInstance;
 
   const createResponse = () => {
     const res = {
@@ -21,11 +21,11 @@ describe("getHealth", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    stdoutSpy = jest.spyOn(process.stdout, "write").mockImplementation(() => true);
   });
 
   afterEach(() => {
-    consoleErrorSpy.mockRestore();
+    stdoutSpy.mockRestore();
   });
 
   it("returns 200 when database is reachable", async () => {

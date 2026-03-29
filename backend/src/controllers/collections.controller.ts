@@ -1,6 +1,7 @@
 import { Response, NextFunction } from "express";
 import { prisma } from "../config/db";
 import { AuthRequest } from "../middleware/authMiddleware";
+import { logger } from "../logger";
 
 export async function createNewCollection(
   req: AuthRequest,
@@ -23,7 +24,7 @@ export async function createNewCollection(
       data: {
         name,
         description,
-        userId: req.user.userId, // тепер TS знає, що user точно існує
+        userId: req.user.userId,
         imagePath,
       },
     });
@@ -40,7 +41,7 @@ export async function getUserCollections(
   next: NextFunction
 ) {
   try {
-    new Promise((resolve) => setTimeout(resolve, 5000)); // симулюю затримку
+    new Promise((resolve) => setTimeout(resolve, 5000));
 
     const collections = await prisma.collection.findMany({
       where: { userId: req.user!.userId },
@@ -65,7 +66,6 @@ export async function getCollectionById(
 
   const collection = await prisma.collection.findUnique({
     where: { id: collectionId },
-    // щоб одразу підтягувати терміни та їх визначення
     include: {
       terms: {
         include: {
@@ -94,14 +94,17 @@ export async function editCollection(
     }
 
     const { name, description } = req.body;
-    console.log("name, description", name, description);
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined; // undefined, щоб не перезаписувати якщо нема
+    logger.info("Updating collection", {
+      collectionId,
+      name,
+      hasDescription: Boolean(description),
+    });
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
 
     if (!req.user) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    // Перевіряємо, чи колекція існує та належить користувачу
     const existingCollection = await prisma.collection.findUnique({
       where: { id: collectionId },
     });
@@ -114,7 +117,6 @@ export async function editCollection(
       return res.status(403).json({ error: "Forbidden" });
     }
 
-    // Оновлюємо колекцію і відразу включаємо терміни та визначення
     const updatedCollection = await prisma.collection.update({
       where: { id: collectionId },
       data: {
@@ -131,7 +133,7 @@ export async function editCollection(
       },
     });
 
-    console.log("updatedCollection", updatedCollection);
+    logger.info("Collection updated", { collectionId: updatedCollection.id });
     res.status(200).json(updatedCollection);
   } catch (error) {
     next(error);
@@ -153,7 +155,6 @@ export async function deleteCollectionById(
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    // Перевіряємо, чи колекція існує та належить користувачу
     const existingCollection = await prisma.collection.findUnique({
       where: { id: collectionId },
     });
@@ -166,7 +167,6 @@ export async function deleteCollectionById(
       return res.status(403).json({ error: "Forbidden" });
     }
 
-    // Видаляємо колекцію (разом з термінами та визначеннями, якщо cascade налаштовано)
     await prisma.collection.delete({
       where: { id: collectionId },
     });

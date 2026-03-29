@@ -23,6 +23,7 @@ cd SpeaklyApp
 cd backend
 docker-compose up -d   # Start PostgreSQL
 npm install   # Install backend dependencies
+npx prisma generate  # Generate Prisma Client
 npm run dev # Start backend server
 ```
 3. Install DB & dependencies for frontend:

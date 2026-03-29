@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { Prisma } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export function errorHandler(
   err: any,
@@ -10,7 +10,7 @@ export function errorHandler(
   console.error("Error:", err);
 
   if (
-    err instanceof Prisma.PrismaClientKnownRequestError &&
+    err instanceof PrismaClientKnownRequestError &&
     err.code === "P2002"
   ) {
     return res.status(409).json({ error: "Duplicate entry" });

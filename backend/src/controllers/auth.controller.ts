@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../config/db";
-import { Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET!;
@@ -44,7 +44,7 @@ export async function register(
     });
   } catch (error) {
     if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error instanceof PrismaClientKnownRequestError &&
       error.code === "P2002"
     ) {
       return res

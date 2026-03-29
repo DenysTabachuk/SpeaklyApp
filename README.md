@@ -24,7 +24,14 @@ cd backend
 docker-compose up -d   # Start PostgreSQL
 npm install   # Install backend dependencies
 npx prisma generate  # Generate Prisma Client
+npx prisma migrate deploy  # Apply database migrations
 npm run dev # Start backend server
+```
+Before starting the backend, create `backend/.env` with:
+```env
+DATABASE_URL="postgresql://admin:admin@localhost:5432/english_app?schema=public"
+JWT_SECRET="your_access_secret"
+JWT_REFRESH_SECRET="your_refresh_secret"
 ```
 3. Install DB & dependencies for frontend:
  ```bash

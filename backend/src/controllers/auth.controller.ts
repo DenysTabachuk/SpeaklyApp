@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../config/db";
+import { env } from "../config/env";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET!;
+const JWT_SECRET = env.jwtSecret;
+const JWT_REFRESH_SECRET = env.jwtRefreshSecret;
 
 function generateTokens(payload: object) {
   const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: "2h" });

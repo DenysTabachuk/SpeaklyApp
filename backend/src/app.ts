@@ -2,12 +2,13 @@ import express from "express";
 import cors from "cors";
 import routes from "./routes/index";
 import { errorHandler } from "./middleware/errorHandler";
+import { env } from "./config/env";
 
 const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: env.frontendOrigin,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );

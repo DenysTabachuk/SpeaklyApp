@@ -3,6 +3,7 @@ import defaultImage from "../../../../../assets/default-image.png";
 import { Link } from "react-router-dom";
 import Button from "../../../../../components/Button/Button";
 import styles from "./CollectionCardItem.module.css";
+import { buildBackendAssetUrl } from "../../../../../config/env";
 
 type CollectionCardItemProps = {
   collection: Collection;
@@ -15,7 +16,7 @@ function CollectionCardItem({ collection }: CollectionCardItemProps) {
         <img
           src={
             collection.imagePath
-              ? "http://localhost:3000" + collection.imagePath
+              ? buildBackendAssetUrl(collection.imagePath)
               : defaultImage
           }
           alt=""

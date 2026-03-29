@@ -1,7 +1,8 @@
 import axios from "axios";
+import { frontendEnv } from "../config/env";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: frontendEnv.apiBaseUrl,
 });
 
 // перехоплюємо request та редагуємо config додаючи завжди токени

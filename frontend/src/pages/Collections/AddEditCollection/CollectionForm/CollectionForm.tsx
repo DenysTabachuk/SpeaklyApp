@@ -5,6 +5,7 @@ import { useState } from "react";
 import styles from "./CollectionForm.module.css";
 import Button from "../../../../components/Button/Button";
 import { Link, Form } from "react-router-dom";
+import { buildBackendAssetUrl } from "../../../../config/env";
 
 type CollectionFormProps = {
   initialValues?: {
@@ -26,7 +27,7 @@ export default function CollectionForm({
   );
   const [preview, setPreview] = useState<string | null>(
     initialValues?.imagePath
-      ? "http://localhost:3000" + initialValues?.imagePath
+      ? buildBackendAssetUrl(initialValues.imagePath)
       : null
   );
   const [error, setError] = useState<string | null>(null);

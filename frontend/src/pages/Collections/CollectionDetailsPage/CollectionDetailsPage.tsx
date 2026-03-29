@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Loading from "../../../components/Loading/Loading";
 import { motion, AnimatePresence } from "framer-motion";
+import { buildBackendAssetUrl } from "../../../config/env";
 
 export default function CollectionDetailsPage() {
   const { id: collectionId } = useParams();
@@ -75,7 +76,7 @@ export default function CollectionDetailsPage() {
         )}
 
         <div className={styles.imgContainer}>
-          <img src={"http://localhost:3000" + collection!.imagePath} alt="" />
+          <img src={buildBackendAssetUrl(collection!.imagePath) ?? ""} alt="" />
         </div>
 
         <p className={styles.description}>{collection!.description}</p>

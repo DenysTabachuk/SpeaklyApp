@@ -6,7 +6,7 @@
     "test": "jest --runInBand",
     "start": "node dist/server.js",
     "dev": "nodemon --watch \"src/**/*.ts\" --exec \"npx ts-node\" src/server.ts",
-    "build": "tsc"
+    "build": "npx prisma generate && tsc"
   },
   "keywords": [],
   "author": "",

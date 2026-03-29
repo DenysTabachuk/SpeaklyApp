@@ -61,3 +61,28 @@ Run all tests for backend and frontend from the repository root:
 ```bash
 npm test
 ```
+
+## Root Commands
+
+Build the whole project from the repository root with one command:
+
+```bash
+npm run build
+```
+
+Start the whole stack from the repository root with one command:
+
+```bash
+npm start
+```
+
+This command:
+- starts PostgreSQL with `docker-compose up -d` from [`backend/docker-compose.yml`](/c:/Users/HP/OneDrive/Рабочий%20стол/SpeaklyApp/backend/docker-compose.yml)
+- starts the backend
+- starts the frontend
+
+For explicit development mode, you can also run:
+
+```bash
+npm run dev
+```

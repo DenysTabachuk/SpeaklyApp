@@ -41,3 +41,11 @@ npm run dev  # Start frontend server
 ```
 
 4. Open the app in your browser at http://localhost:5173/
+
+## Tests
+
+Run all tests for backend and frontend from the repository root:
+
+```bash
+npm test
+```

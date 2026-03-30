@@ -72,7 +72,7 @@ export async function action({ request }: LoaderFunctionArgs) {
   }
 
   try {
-    const response = await api.post("/register", { nickname, email, password });
+    await api.post("/register", { nickname, email, password });
     return redirect("/login"); // після успіху редірект
   } catch (error: any) {
     return {

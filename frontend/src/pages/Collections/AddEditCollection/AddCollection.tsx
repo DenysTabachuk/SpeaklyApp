@@ -14,6 +14,6 @@ export default function AddNewCollectionPage() {
 
 export async function action({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
-  const response = await api.post("/collections", formData);
+  await api.post("/collections", formData);
   return redirect("/collections");
 }

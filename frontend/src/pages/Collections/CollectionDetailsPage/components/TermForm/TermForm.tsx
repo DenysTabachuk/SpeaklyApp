@@ -6,6 +6,7 @@ import type { Definition } from "../../../../../types/definition";
 import type { Term } from "../../../../../types/term";
 import styles from "./TermForms.module.css";
 import { useEffect, useState } from "react";
+import type { FormEvent } from "react";
 import { useParams } from "react-router-dom";
 import useAddTermMutation from "../../mutations/useAddTermMutation";
 import useEditTermMutation from "../../mutations/useEditTermMutation";
@@ -58,9 +59,15 @@ export default function TermForm({
     stopAddingTerm();
   };
 
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    void handleSubmit(new FormData(event.currentTarget));
+  };
+
   return (
     <motion.form
       className={styles.form}
+      onSubmit={onSubmit}
       initial={{ opacity: 0, height: 0 }}
       animate={{ opacity: 1, height: "auto" }}
       exit={{

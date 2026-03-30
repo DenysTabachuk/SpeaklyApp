@@ -16,7 +16,7 @@ function CollectionCardItem({ collection }: CollectionCardItemProps) {
         <img
           src={
             collection.imagePath
-              ? buildBackendAssetUrl(collection.imagePath)
+              ? (buildBackendAssetUrl(collection.imagePath) ?? defaultImage)
               : defaultImage
           }
           alt=""

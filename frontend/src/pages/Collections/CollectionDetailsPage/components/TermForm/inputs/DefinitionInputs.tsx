@@ -32,7 +32,6 @@ export default function DefinitionInputs({
     index: number,
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const defiinitionWeChanging = myDefinitions[index];
     const updatedDefinitions = [...myDefinitions];
 
     updatedDefinitions[index] = {
@@ -68,8 +67,8 @@ export default function DefinitionInputs({
   return (
     <div className={style.defenitionInputs}>
       {myDefinitions.map((definition, index) => (
-        <>
-          <div key={index} className={style.definitionInputButton}>
+        <div key={index}>
+          <div className={style.definitionInputButton}>
             <Input
               label={`Визначення ${index + 1}`}
               onChange={(e) => handleDefinitionInputChange(index, e)}
@@ -97,7 +96,7 @@ export default function DefinitionInputs({
               definitionOnClick={handleDefinitionSelect}
             />
           )}
-        </>
+        </div>
       ))}
 
       <Button type="button" glowing onClick={addNewDefinition}>

@@ -30,8 +30,6 @@ export default function CollectionForm({
       ? buildBackendAssetUrl(initialValues.imagePath)
       : null
   );
-  const [error, setError] = useState<string | null>(null);
-
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
     setPreview(selectedFile ? URL.createObjectURL(selectedFile) : null);
@@ -83,8 +81,6 @@ export default function CollectionForm({
           display: preview ? "none" : "block",
         }}
       />
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <div className={styles.buttonContainer}>
         <Button glowing type="submit">

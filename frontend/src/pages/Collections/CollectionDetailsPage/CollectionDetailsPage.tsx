@@ -12,7 +12,7 @@ import api from "../../../api/api";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Loading from "../../../components/Loading/Loading";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { buildBackendAssetUrl } from "../../../config/env";
 
 export default function CollectionDetailsPage() {

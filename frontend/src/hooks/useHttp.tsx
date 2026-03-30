@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-type AsyncFunction<T, Args extends any[] = []> = (...args: Args) => Promise<T>;
-
 export function useHttp<T, Args extends any[] = []>(
   asyncFunction: (...args: Args) => Promise<Response | T>
 ) {

@@ -80,6 +80,10 @@ process.on("SIGTERM", () => {
   void shutdown("SIGTERM");
 });
 
+process.on("SIGINT", () => {
+  void shutdown("SIGINT");
+});
+
 startServer().catch((error) => {
   logger.error("Failed to start server", { error });
   process.exit(1);

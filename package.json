@@ -6,10 +6,12 @@
     "build:backend": "npm --prefix backend run build",
     "build:frontend": "npm --prefix frontend run build",
     "dev": "node scripts/run-stack.js",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
     "start": "node scripts/run-stack.js",
     "start:prod": "node scripts/run-stack.js prod",
     "start:backend": "npm --prefix backend run start",
-    "start:frontend": "npm --prefix frontend run dev",
+    "start:frontend": "npm --prefix frontend run preview",
     "test": "npm --prefix backend test && npm --prefix frontend test"
   }
 }

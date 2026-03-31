@@ -24,6 +24,7 @@ async function runMigrations() {
   );
   const schemaPath = path.resolve(__dirname, "..", "prisma", "schema.prisma");
 
+  // Лабораторна №0: Під час старту автоматично застосовуємо міграції БД без ручного запуску SQL-скриптів.
   await execFileAsync(
     process.execPath,
     [prismaCliPath, "migrate", "deploy", "--schema", schemaPath],
@@ -51,6 +52,8 @@ async function shutdown(signal: NodeJS.Signals) {
   }
 
   isShuttingDown = true;
+  // Лабораторна №0: Обробка SIGTERM/SIGINT для graceful shutdown: перестаємо приймати нові запити
+  // і коректно закриваємо ресурси перед завершенням процесу.
   logger.info(`${signal} received. Starting graceful shutdown...`);
 
   try {
@@ -67,6 +70,7 @@ async function shutdown(signal: NodeJS.Signals) {
       });
     }
 
+    // Після зупинки HTTP-сервера закриваємо з'єднання з базою даних.
     await prisma.$disconnect();
     logger.info("Graceful shutdown completed");
     process.exit(0);

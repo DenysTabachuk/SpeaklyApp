@@ -8,6 +8,8 @@ function requireEnv(name: string): string {
   return value;
 }
 
+// Лабораторна №0: критичну конфігурацію застосунок бере зі змінних оточення,
+// а не з захардкоджених значень у коді.
 const dbHost = requireEnv("DB_HOST");
 const dbPort = requireEnv("DB_PORT");
 const dbName = requireEnv("DB_NAME");
@@ -33,4 +35,5 @@ export const env = {
     `postgresql://${encodedUser}:${encodedPassword}@${dbHost}:${dbPort}/${dbName}?schema=public`,
 };
 
+// Prisma очікує DATABASE_URL у process.env, тому формуємо єдине джерело конфігурації тут.
 process.env.DATABASE_URL = env.databaseUrl;

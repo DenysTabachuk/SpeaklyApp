@@ -16,6 +16,7 @@ function serializeError(error: unknown) {
 
 function writeLog(level: LogLevel, message: string, meta?: LogMeta) {
   const payload: Record<string, unknown> = {
+    // Лабораторна №0: логи виводяться у STDOUT як структуровані JSON-об'єкти.
     timestamp: new Date().toISOString(),
     level,
     message,

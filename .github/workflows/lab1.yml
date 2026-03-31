@@ -1,0 +1,36 @@
+name: Lab 1 Grading
+
+on: [push]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Tools
+        run: sudo apt-get update && sudo apt-get install -y jq curl
+
+      - name: Build and Start
+        run: docker compose up -d --build
+
+      - name: Wait for Readiness
+        run: |
+          for i in {1..20}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" localhost:8080/health || echo "000")
+            if [ "$STATUS" -eq 200 ]; then
+              echo "App is ready!"
+              exit 0
+            fi
+            echo "Waiting..."
+            sleep 3
+          done
+          echo "App did not become ready in time"
+          docker compose logs
+          exit 1
+
+      - name: Run Grading Script
+        run: |
+          chmod +x ./tests/lab1_test.sh
+          ./tests/lab1_test.sh

@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: speakly
+      POSTGRES_USER: speakly
+      POSTGRES_PASSWORD: speakly_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: ./backend
+    container_name: app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 8080
+      FRONTEND_ORIGIN: http://localhost:5173
+      JWT_SECRET: lab1-access-secret
+      JWT_REFRESH_SECRET: lab1-refresh-secret
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: speakly
+      DB_USER: speakly
+      DB_PASSWORD: speakly_password
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:

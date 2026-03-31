@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import routes from "./routes/index";
 import { errorHandler } from "./middleware/errorHandler";
+import { requestLogger } from "./middleware/requestLogger";
 import { env } from "./config/env";
 
 const app = express();
@@ -13,21 +14,16 @@ app.use(
   })
 );
 
-app.use(express.json()); // ✅ для JSON
-app.use(express.urlencoded({ extended: true })); // ✅ якщо колись прийде form-urlencoded
-
-// Статика для завантажених файлів
+app.use(requestLogger);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 
-// Тестовий роут
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.send("Hello from TypeScript backend!");
 });
 
-// Підключаємо маршрути
 app.use(routes);
-
-// Middleware для обробки помилок
 app.use(errorHandler);
 
 export default app;

@@ -42,7 +42,7 @@ jobs:
           tags: ${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.sha_tag }}
 
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@b6643a22d1a5733f491176e9b622c0d0e56a2eb2
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.sha_tag }}
           format: table

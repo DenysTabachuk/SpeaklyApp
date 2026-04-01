@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "ecommerce-app.configMapName" . }}
+  labels:
+    {{- include "ecommerce-app.labels" . | nindent 4 }}
+data:
+  DB_HOST: {{ .Values.config.dbHost | quote }}
+  DB_PORT: {{ .Values.config.dbPort | quote }}
+  DB_NAME: {{ .Values.config.dbName | quote }}
+  DB_USER: {{ .Values.config.dbUser | quote }}
+  FRONTEND_ORIGIN: {{ .Values.config.frontendOrigin | quote }}
+  PORT: {{ .Values.config.appPort | quote }}
